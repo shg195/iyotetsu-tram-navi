@@ -41,6 +41,8 @@ export interface Strings {
   sameBody: string;
   noneTitle: string;
   noneBody: string;
+  suspendedTitle: string;
+  suspendedBody: string;
   endedTitle: string;
   endedBody: string;
   noNextService: string;
@@ -94,6 +96,8 @@ export const STRINGS: Record<Lang, Strings> = {
     sameBody: "出発と到着に別の電停を選んでください。",
     noneTitle: "経路が見つかりません",
     noneBody: "直通の系統がありません。乗り換えが必要です（乗換案内は今後対応）。",
+    suspendedTitle: "本日は運休です",
+    suspendedBody: "本町線（⑥番）は土曜・日曜・祝日は終日運休です。これらの電停を結ぶ系統は本町線のみのため、本日は運行していません。",
     endedTitle: "本日の運行は終了しました",
     endedBody: "翌日の始発をご案内します。",
     noNextService: "翌日も運行がありません。",
@@ -145,6 +149,8 @@ export const STRINGS: Record<Lang, Strings> = {
     sameBody: "Please choose different departure and arrival stops.",
     noneTitle: "No route found",
     noneBody: "No line directly connects these stops. A transfer is required (transfer guidance coming soon).",
+    suspendedTitle: "Not operating today",
+    suspendedBody: "The Hommachi Line (Route 6) does not run on Saturdays, Sundays, or holidays. These stops are connected only by the Hommachi Line, so there is no service today.",
     endedTitle: "Today's service has ended",
     endedBody: "Showing tomorrow's first trains.",
     noNextService: "No service tomorrow either.",

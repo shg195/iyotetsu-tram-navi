@@ -126,7 +126,20 @@ export function findRoutes(
   if (from === to) return { status: "same_stop", routes: [] };
 
   const candidates = extractCandidates(from, to, dayType);
-  if (candidates.length === 0) return { status: "no_route", routes: [] };
+  if (candidates.length === 0) {
+    // ⑥番(本町線=weekday_only)のみが結ぶODを土日祝に検索した場合は no_route ではなく
+    // 運休である旨を返す（spec 5.6）。当該ODは乗換でも到達できないため「乗換が必要」は誤案内になる。
+    if (dayType === "saturday_holiday") {
+      const weekdayCandidates = extractCandidates(from, to, "weekday");
+      if (
+        weekdayCandidates.length > 0 &&
+        weekdayCandidates.every((c) => c.route.weekday_only === true)
+      ) {
+        return { status: "suspended_today", routes: [] };
+      }
+    }
+    return { status: "no_route", routes: [] };
+  }
 
   const upcoming = candidates.filter((c) => c.board.minutes >= nowMin);
   if (upcoming.length > 0) {

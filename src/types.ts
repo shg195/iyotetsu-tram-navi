@@ -217,13 +217,15 @@ export interface RouteResult {
  * - after_last: 終電後。routes は翌日の便、nextDayType に翌日の曜日区分（spec 5.6）。
  * - same_stop: 出発＝到着（spec 5.6、経路を出さず選び直しを促す）。
  * - no_route: 乗換なし経路が存在しない（乗換が必要・Phase 2、spec 5.3末尾）。
+ * - suspended_today: ⑥番(本町線=weekday_only)のみが結ぶODを土日祝に検索した場合。本町線運休のため当日は到達不可（spec 5.6）。
  */
 export type RouteQueryStatus =
   | "results"
   | "before_first"
   | "after_last"
   | "same_stop"
-  | "no_route";
+  | "no_route"
+  | "suspended_today";
 
 /** 経路探索の結果全体（モジュール5の出力）。 */
 export interface RouteQueryResult {

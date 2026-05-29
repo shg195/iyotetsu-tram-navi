@@ -683,6 +683,8 @@ export function TramApp() {
     body = <Notice title={t.sameTitle} body={t.sameBody} tone="warn" />;
   } else if (result.status === "no_route") {
     body = <Notice title={t.noneTitle} body={t.noneBody} tone="warn" />;
+  } else if (result.status === "suspended_today") {
+    body = <Notice title={t.suspendedTitle} body={t.suspendedBody} tone="warn" />;
   } else if (result.status === "after_last") {
     const shown = result.routes.slice(0, limit);
     body = (
