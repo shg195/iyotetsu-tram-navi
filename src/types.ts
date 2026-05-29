@@ -209,3 +209,25 @@ export interface RouteResult {
   isEstimated: boolean; // 中間電停の計算値を含むか（spec 6.2）
   waitMin: number; // 基準時刻からの待ち時間
 }
+
+/**
+ * 経路探索の状態（spec 5.3 / 5.6）。エラーではなく結果状態として扱う（docs/conventions.md）。
+ * - results: 当日乗れる便あり（routes[0]=次発, routes[1]=次々発, spec 5.4）。
+ * - before_first: 始発前。routes はその日の始発以降（spec 5.6）。
+ * - after_last: 終電後。routes は翌日の便、nextDayType に翌日の曜日区分（spec 5.6）。
+ * - same_stop: 出発＝到着（spec 5.6、経路を出さず選び直しを促す）。
+ * - no_route: 乗換なし経路が存在しない（乗換が必要・Phase 2、spec 5.3末尾）。
+ */
+export type RouteQueryStatus =
+  | "results"
+  | "before_first"
+  | "after_last"
+  | "same_stop"
+  | "no_route";
+
+/** 経路探索の結果全体（モジュール5の出力）。 */
+export interface RouteQueryResult {
+  status: RouteQueryStatus;
+  routes: RouteResult[]; // 早い順。same_stop / no_route のときは空。
+  nextDayType?: DayType; // after_last のときの翌日の曜日区分。
+}
