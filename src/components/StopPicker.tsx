@@ -55,19 +55,80 @@ export function StopPicker({
 }) {
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [dragY, setDragY] = useState(0); // 下スワイプ中のシート移動量(px)
+  const [dragging, setDragging] = useState(false); // ドラッグ中（transition制御用）
+  const [entered, setEntered] = useState(false); // 下からの登場アニメ用
+  const drag = useRef({ startY: 0, active: false });
+
   useEffect(() => {
     const id = setTimeout(() => inputRef.current?.focus(), 280);
     return () => clearTimeout(id);
   }, []);
 
-  // ボトムシート表示中は背景（本命UI）のスクロール貫通を防ぐ。閉じたら元に戻す。
+  // 下から登場（次フレームで translateY(100%)→0）。
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const id = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  // ボトムシート表示中は背景（本命UI）のスクロールを固定する。iOS Safari でも確実に
+  // 効くよう body を position:fixed にし、閉じたらスクロール位置を復元する。
+  useEffect(() => {
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      body.style.overflow = prev.overflow;
+      window.scrollTo(0, scrollY);
     };
   }, []);
+
+  // リスト最上部からの下方向ドラッグはシートを下げる動きに使うため、ブラウザの
+  // オーバースクロール（背景への伝播）を抑止する（passive:false が必須）。
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const onMove = (e: TouchEvent) => {
+      if (!drag.current.active) return;
+      const dy = e.touches[0].clientY - drag.current.startY;
+      if (dy > 0 && list.scrollTop <= 0) e.preventDefault();
+    };
+    list.addEventListener("touchmove", onMove, { passive: false });
+    return () => list.removeEventListener("touchmove", onMove);
+  }, []);
+
+  // シートのドラッグ（ハンドル/ヘッダ、またはリスト最上部から下へ）。閾値超で閉じる。
+  const CLOSE_THRESHOLD = 90;
+  const onTouchStart = (e: React.TouchEvent) => {
+    drag.current = { startY: e.touches[0].clientY, active: true };
+    setDragging(true);
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!drag.current.active) return;
+    const dy = e.touches[0].clientY - drag.current.startY;
+    const atTop = (listRef.current?.scrollTop ?? 0) <= 0;
+    if (dy > 0 && atTop) setDragY(dy);
+    else if (dragY !== 0) setDragY(0);
+  };
+  const onTouchEnd = () => {
+    drag.current.active = false;
+    setDragging(false);
+    if (dragY > CLOSE_THRESHOLD) onClose();
+    else setDragY(0);
+  };
 
   const results: Stop[] | null = q.trim() ? searchStops(q) : null;
 
@@ -156,6 +217,9 @@ export function StopPicker({
         }}
       />
       <div
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
         style={{
           position: "absolute",
           left: 0,
@@ -171,7 +235,8 @@ export function StopPicker({
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
-          animation: "sheetUp 0.32s cubic-bezier(0.22,1,0.36,1)",
+          transform: entered ? `translateY(${dragY}px)` : "translateY(100%)",
+          transition: dragging ? "none" : "transform 0.3s cubic-bezier(0.22,1,0.36,1)",
         }}
       >
         {/* handle + header */}
@@ -264,7 +329,7 @@ export function StopPicker({
         </div>
 
         {/* list */}
-        <div style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
+        <div ref={listRef} style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch", overscrollBehavior: "contain" }}>
           {results ? (
             results.length ? (
               results.map((s) => rowBtn(s.id))
