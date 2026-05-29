@@ -173,6 +173,21 @@ export interface Fare {
 
 // ===== 計算・ドメイン型（JSONに無い派生概念。camelCase） =====
 
+/**
+ * 正規化された 1方向ぶんの便群（モジュール1の出力）。
+ * timetable の3形態（ループ①②／双方向展開③⑤／双方向明示⑥）を統一して扱うためのビュー。
+ * 日中便の展開・中間電停の補間はここでは行わない（モジュール2）。
+ */
+export interface NormalizedSection {
+  routeId: RouteId;
+  directionKey: string; // ループ系統は "loop"、双方向系統は directions のキー
+  stopsInOrder: StopId[];
+  earlyMorningTrips: Trip[];
+  daytimePattern?: DaytimePattern; // ⑥番（明示型）は持たない
+  nightTrips: Trip[];
+  explicitTrips?: Trip[]; // ⑥番のみ。全便が明示で入る
+}
+
 /** 経路探索の結果 1件（spec 4章 / 5.3）。 */
 export interface RouteResult {
   routeId: RouteId;
