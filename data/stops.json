@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "description": "伊予鉄道 市内電車（路面電車）電停マスタ",
+    "source": "伊予鉄道 市内電車路線図（2018年版PDF）より電停名・番号を確定",
+    "coordinate_note": "緯度経度は概算値。実装時にGoogle Maps等で要検証（requires_coord_verification: true）",
+    "stop_count": 29
+  },
+  "stops": [
+    { "id": "matsuyamashi-eki", "no": "01", "name": "松山市駅", "kana": "まつやましえき", "romaji": "Matsuyama-shi Station", "aliases": ["松山市駅", "市駅", "matsuyamashi", "matsuyama shi"], "lat": 33.8392, "lng": 132.7657, "requires_coord_verification": true },
+    { "id": "minami-horibata", "no": "02", "name": "南堀端", "kana": "みなみほりばた", "romaji": "Minami-Horibata", "aliases": ["南堀端", "minamihoribata"], "lat": 33.8404, "lng": 132.7648, "requires_coord_verification": true },
+    { "id": "nishi-horibata", "no": "03", "name": "西堀端", "kana": "にしほりばた", "romaji": "Nishi-Horibata", "aliases": ["西堀端", "nishihoribata"], "lat": 33.8409, "lng": 132.7618, "requires_coord_verification": true },
+    { "id": "otemachi-ekimae", "no": "04", "name": "大手町駅前", "kana": "おてまちえきまえ", "romaji": "Otemachi Sta.", "aliases": ["大手町駅前", "大手町", "otemachi"], "lat": 33.8420, "lng": 132.7588, "requires_coord_verification": true },
+    { "id": "jr-matsuyama-ekimae", "no": "05", "name": "JR松山駅前", "kana": "じぇいあーるまつやまえきまえ", "romaji": "JR Matsuyama Station", "aliases": ["JR松山駅前", "JR松山駅", "松山駅前", "jr matsuyama", "jrmatsuyama"], "lat": 33.8392, "lng": 132.7547, "requires_coord_verification": true },
+    { "id": "miyatacho", "no": "06", "name": "宮田町", "kana": "みやたちょう", "romaji": "Miyatacho", "aliases": ["宮田町", "miyatacho"], "lat": 33.8430, "lng": 132.7558, "requires_coord_verification": true },
+    { "id": "komachi", "no": "07", "name": "古町", "kana": "こまち", "romaji": "Komachi", "aliases": ["古町", "komachi"], "lat": 33.8480, "lng": 132.7570, "requires_coord_verification": true },
+    { "id": "kayamachi-roku", "no": "08", "name": "萱町六丁目", "kana": "かやまちろくちょうめ", "romaji": "Kayamachi 6", "aliases": ["萱町六丁目", "萱町六", "萱町6丁目", "kayamachi"], "lat": 33.8506, "lng": 132.7593, "requires_coord_verification": true },
+    { "id": "hommachi-roku", "no": "09", "name": "本町六丁目", "kana": "ほんまちろくちょうめ", "romaji": "Hommachi 6", "aliases": ["本町六丁目", "本町六", "本町6丁目", "hommachi6", "honmachi6"], "lat": 33.8510, "lng": 132.7625, "requires_coord_verification": true },
+    { "id": "kiyacho", "no": "10", "name": "木屋町", "kana": "きやちょう", "romaji": "Kiyacho", "aliases": ["木屋町", "kiyacho"], "lat": 33.8512, "lng": 132.7668, "requires_coord_verification": true },
+    { "id": "takasagocho", "no": "11", "name": "高砂町", "kana": "たかさごちょう", "romaji": "Takasagocho", "aliases": ["高砂町", "takasagocho"], "lat": 33.8513, "lng": 132.7706, "requires_coord_verification": true },
+    { "id": "shimizumachi", "no": "12", "name": "清水町", "kana": "しみずまち", "romaji": "Shimizumachi", "aliases": ["清水町", "shimizumachi"], "lat": 33.8513, "lng": 132.7745, "requires_coord_verification": true },
+    { "id": "teppocho", "no": "13", "name": "鉄砲町", "kana": "てっぽうちょう", "romaji": "Teppocho", "aliases": ["鉄砲町", "teppocho"], "lat": 33.8513, "lng": 132.7783, "requires_coord_verification": true },
+    { "id": "sekijujibyoin-mae", "no": "14", "name": "赤十字病院前", "kana": "せきじゅうじびょういんまえ", "romaji": "Red Cross Hospital", "aliases": ["赤十字病院前", "赤十字病院", "日赤", "sekijujibyoin"], "lat": 33.8513, "lng": 132.7820, "requires_coord_verification": true },
+    { "id": "heiwadori-ichi", "no": "15", "name": "平和通一丁目", "kana": "へいわどおりいっちょうめ", "romaji": "Heiwadori 1", "aliases": ["平和通一丁目", "平和通一", "平和通1丁目", "heiwadori"], "lat": 33.8513, "lng": 132.7858, "requires_coord_verification": true },
+    { "id": "kamiichiman", "no": "16", "name": "上一万", "kana": "かみいちまん", "romaji": "Kamiichiman", "aliases": ["上一万", "kamiichiman"], "lat": 33.8492, "lng": 132.7868, "requires_coord_verification": true },
+    { "id": "keisatsusho-mae", "no": "17", "name": "警察署前", "kana": "けいさつしょまえ", "romaji": "Police Station", "aliases": ["警察署前", "keisatsusho"], "lat": 33.8466, "lng": 132.7868, "requires_coord_verification": true },
+    { "id": "katsuyamacho", "no": "18", "name": "勝山町", "kana": "かつやまちょう", "romaji": "Katsuyamacho", "aliases": ["勝山町", "katsuyamacho"], "lat": 33.8440, "lng": 132.7868, "requires_coord_verification": true },
+    { "id": "okaido", "no": "19", "name": "大街道", "kana": "おおかいどう", "romaji": "Okaido", "aliases": ["大街道", "okaido"], "lat": 33.8420, "lng": 132.7855, "requires_coord_verification": true },
+    { "id": "kencho-mae", "no": "20", "name": "県庁前", "kana": "けんちょうまえ", "romaji": "Ehime Pref. Office", "aliases": ["県庁前", "kencho"], "lat": 33.8412, "lng": 132.7822, "requires_coord_verification": true },
+    { "id": "shiyakusho-mae", "no": "21", "name": "市役所前", "kana": "しやくしょまえ", "romaji": "Matsuyama City Hall", "aliases": ["市役所前", "shiyakusho"], "lat": 33.8410, "lng": 132.7785, "requires_coord_verification": true },
+    { "id": "minamimachi", "no": "22", "name": "南町", "kana": "みなみまち", "romaji": "Minamimachi", "aliases": ["南町", "県民文化会館前", "minamimachi"], "lat": 33.8478, "lng": 132.7905, "requires_coord_verification": true },
+    { "id": "dogo-koen", "no": "23", "name": "道後公園", "kana": "どうごこうえん", "romaji": "Dogo Park", "aliases": ["道後公園", "湯築城跡前", "dogokoen"], "lat": 33.8492, "lng": 132.7935, "requires_coord_verification": true },
+    { "id": "dogo-onsen", "no": "24", "name": "道後温泉", "kana": "どうごおんせん", "romaji": "Dogo Onsen", "aliases": ["道後温泉", "道後", "dogo", "dogoonsen"], "lat": 33.8517, "lng": 132.7866, "requires_coord_verification": true },
+    { "id": "hommachi-ichi", "no": "25", "name": "本町一丁目", "kana": "ほんまちいっちょうめ", "romaji": "Hommachi 1", "aliases": ["本町一丁目", "本町一", "本町1丁目", "hommachi1"], "lat": 33.8430, "lng": 132.7625, "requires_coord_verification": true },
+    { "id": "hommachi-san", "no": "26", "name": "本町三丁目", "kana": "ほんまちさんちょうめ", "romaji": "Hommachi 3", "aliases": ["本町三丁目", "本町三", "本町3丁目", "hommachi3"], "lat": 33.8455, "lng": 132.7625, "requires_coord_verification": true },
+    { "id": "hommachi-yon", "no": "27", "name": "本町四丁目", "kana": "ほんまちよんちょうめ", "romaji": "Hommachi 4", "aliases": ["本町四丁目", "本町四", "本町4丁目", "hommachi4"], "lat": 33.8472, "lng": 132.7625, "requires_coord_verification": true },
+    { "id": "hommachi-go", "no": "28", "name": "本町五丁目", "kana": "ほんまちごちょうめ", "romaji": "Hommachi 5", "aliases": ["本町五丁目", "本町五", "本町5丁目", "hommachi5"], "lat": 33.8490, "lng": 132.7625, "requires_coord_verification": true },
+    { "id": "hommachi-roku-rosen", "no": "29", "name": "本町六丁目", "kana": "ほんまちろくちょうめ", "romaji": "Hommachi 6", "aliases": ["本町六丁目", "本町六", "本町6丁目", "hommachi6-rosen"], "lat": 33.8510, "lng": 132.7625, "requires_coord_verification": true, "note": "⑥番本町線の終点。環状線の本町六(09)とは別位置の同名電停。路線図では09と29が近接して描かれる"}
+  ]
+}

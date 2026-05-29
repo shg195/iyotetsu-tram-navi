@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "route_id": "6",
+    "route_name": "⑥番 本町線（松山市駅⇔本町六丁目）",
+    "source": "市内電車時刻表 2023年11月1日改正版 PDF より精読",
+    "timetable_revision": "2023-11-01",
+    "structure_note": "★全便 土曜・日曜・祝日・振替休日 運休（平日のみ運行）。年末年始(12/30-1/3)は祝日扱い=全便運休。便数が少なく『○分毎』表記なし、全便を明示。約40分間隔・朝夕中心。",
+    "weekday_only": true
+  },
+  "directions": {
+    "outbound_to_hommachi": {
+      "label": "松山市駅→本町六丁目",
+      "stops_in_order": ["matsuyamashi-eki", "minami-horibata", "hommachi-ichi", "hommachi-san", "hommachi-yon", "hommachi-go", "hommachi-roku-rosen"],
+      "trips": [
+        { "trip": "T1", "stops": { "matsuyamashi-eki": "6:38", "minami-horibata": "6:40", "hommachi-san": "6:45", "hommachi-roku-rosen": "6:51" } },
+        { "trip": "T2", "stops": { "matsuyamashi-eki": "7:18", "minami-horibata": "7:20", "hommachi-san": "7:25", "hommachi-roku-rosen": "7:31" } },
+        { "trip": "T3", "stops": { "matsuyamashi-eki": "7:58", "minami-horibata": "8:00", "hommachi-san": "8:05", "hommachi-roku-rosen": "8:11" } },
+        { "trip": "T4", "stops": { "matsuyamashi-eki": "8:48", "minami-horibata": "8:50", "hommachi-san": "8:55", "hommachi-roku-rosen": "9:01" } },
+        { "trip": "T5", "stops": { "matsuyamashi-eki": "11:18", "minami-horibata": "11:20", "hommachi-san": "11:25", "hommachi-roku-rosen": "11:31" } },
+        { "trip": "T6", "stops": { "matsuyamashi-eki": "11:58", "minami-horibata": "12:00", "hommachi-san": "12:05", "hommachi-roku-rosen": "12:11" } },
+        { "trip": "T7", "stops": { "matsuyamashi-eki": "12:38", "minami-horibata": "12:40", "hommachi-san": "12:45", "hommachi-roku-rosen": "12:51" } }
+      ],
+      "note": "本町一(hommachi-ichi)・本町四(hommachi-yon)・本町五(hommachi-go)は時刻表非掲載の中間電停。segments.jsonで補間。南堀端と本町3丁目の間に本町一、本町3丁目と本町6丁目の間に本町四・五。"
+    },
+    "inbound_to_matsuyamashi": {
+      "label": "本町六丁目→松山市駅",
+      "stops_in_order": ["hommachi-roku-rosen", "hommachi-go", "hommachi-yon", "hommachi-san", "hommachi-ichi", "minami-horibata", "matsuyamashi-eki"],
+      "trips": [
+        { "trip": "T1", "stops": { "hommachi-roku-rosen": "7:00", "hommachi-san": "7:05", "minami-horibata": "7:10", "matsuyamashi-eki": "7:14" } },
+        { "trip": "T2", "stops": { "hommachi-roku-rosen": "7:40", "hommachi-san": "7:45", "minami-horibata": "7:50", "matsuyamashi-eki": "7:54" } },
+        { "trip": "T3", "stops": { "hommachi-roku-rosen": "8:20", "hommachi-san": "8:25", "minami-horibata": "8:30", "matsuyamashi-eki": "8:34" } },
+        { "trip": "T4", "stops": { "hommachi-roku-rosen": "9:05", "hommachi-san": "9:10", "minami-horibata": "9:15", "matsuyamashi-eki": "9:19" } },
+        { "trip": "T5", "stops": { "hommachi-roku-rosen": "11:40", "hommachi-san": "11:45", "minami-horibata": "11:50", "matsuyamashi-eki": "11:54" } },
+        { "trip": "T6", "stops": { "hommachi-roku-rosen": "12:20", "hommachi-san": "12:25", "minami-horibata": "12:30", "matsuyamashi-eki": "12:34" } },
+        { "trip": "T7", "stops": { "hommachi-roku-rosen": "13:00", "hommachi-san": "13:05", "minami-horibata": "13:10", "matsuyamashi-eki": "13:14" } }
+      ]
+    }
+  }
+}

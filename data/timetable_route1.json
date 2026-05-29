@@ -1,0 +1,75 @@
+{
+  "_meta": {
+    "route_id": "1",
+    "route_name": "①番 環状線（時計回り）",
+    "source": "市内電車時刻表 2023年11月1日改正版 PDF より精読",
+    "timetable_revision": "2023-11-01",
+    "structure_note": "平日ダイヤを基本とし、土日祝運休便はsaturday_holiday_suspended:trueで示す。日中は『この間10分毎』を展開して便を生成する(daytime_pattern参照)。",
+    "stop_time_keys_note": "各便のstopsは electric-stop id をキーに発車時刻(H:MM)を持つ。区間便で通らない電停はキー自体を含めない。",
+    "shading_legend": "PDFの網掛けセル=土曜・日曜・祝日・振替休日運休。①番の早朝便・夜間便には網掛けなし(全曜日運行)。年末年始(12/30-1/3)は祝日扱い。"
+  },
+  "stops_in_order": [
+    "matsuyamashi-eki", "nishi-horibata", "jr-matsuyama-ekimae", "komachi",
+    "hommachi-roku", "kiyacho", "takasagocho", "shimizumachi", "teppocho",
+    "sekijujibyoin-mae", "heiwadori-ichi", "kamiichiman", "keisatsusho-mae",
+    "katsuyamacho", "okaido", "kencho-mae", "shiyakusho-mae", "matsuyamashi-eki-arr"
+  ],
+  "early_morning_trips": [
+    { "trip": "E1", "origin": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "komachi": "6:36", "hommachi-roku": "6:39", "kiyacho": "6:41", "teppocho": "6:47", "sekijujibyoin-mae": "6:48", "kamiichiman": "6:51", "okaido": "6:57", "shiyakusho-mae": "7:01", "matsuyamashi-eki-arr": "7:05" },
+      "note": "古町始発の区間便。松山市駅・西堀端・JR松山駅前は通らない。高砂町/清水町/平和通一/警察署前/勝山町/県庁前は中間電停で時刻補間対象" },
+    { "trip": "E2", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "6:30", "nishi-horibata": "6:35", "jr-matsuyama-ekimae": "6:40", "komachi": "6:46", "hommachi-roku": "6:49", "kiyacho": "6:51", "teppocho": "6:57", "sekijujibyoin-mae": "6:58", "kamiichiman": "7:02", "okaido": "7:07", "shiyakusho-mae": "7:11", "matsuyamashi-eki-arr": "7:16" } },
+    { "trip": "E3", "origin": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "komachi": "6:56", "hommachi-roku": "6:59", "kiyacho": "7:01", "teppocho": "7:07", "sekijujibyoin-mae": "7:08", "kamiichiman": "7:11", "okaido": "7:17", "shiyakusho-mae": "7:21", "matsuyamashi-eki-arr": "7:25" } },
+    { "trip": "E4", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "6:50", "nishi-horibata": "6:55", "jr-matsuyama-ekimae": "7:00", "komachi": "7:06", "hommachi-roku": "7:09", "kiyacho": "7:11", "teppocho": "7:17", "sekijujibyoin-mae": "7:18", "kamiichiman": "7:22", "okaido": "7:27", "shiyakusho-mae": "7:31", "matsuyamashi-eki-arr": "7:36" } },
+    { "trip": "E5", "origin": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "komachi": "7:16", "hommachi-roku": "7:19", "kiyacho": "7:21", "teppocho": "7:27", "sekijujibyoin-mae": "7:28", "kamiichiman": "7:32", "okaido": "7:37", "shiyakusho-mae": "7:41", "matsuyamashi-eki-arr": "7:46" } },
+    { "trip": "E6", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "7:10", "nishi-horibata": "7:15", "jr-matsuyama-ekimae": "7:20", "komachi": "7:26", "hommachi-roku": "7:29", "kiyacho": "7:31", "teppocho": "7:37", "sekijujibyoin-mae": "7:38", "kamiichiman": "7:42", "okaido": "7:47", "shiyakusho-mae": "7:51", "matsuyamashi-eki-arr": "7:56" } },
+    { "trip": "E7", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "7:20", "nishi-horibata": "7:25", "jr-matsuyama-ekimae": "7:31", "komachi": "7:36", "hommachi-roku": "7:39", "kiyacho": "7:41", "teppocho": "7:47", "sekijujibyoin-mae": "7:48", "kamiichiman": "7:52", "okaido": "7:57", "shiyakusho-mae": "8:01", "matsuyamashi-eki-arr": "8:06" } },
+    { "trip": "E8", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "7:30", "nishi-horibata": "7:35", "jr-matsuyama-ekimae": "7:41", "komachi": "7:46", "hommachi-roku": "7:49", "kiyacho": "7:51", "teppocho": "7:57", "sekijujibyoin-mae": "7:58", "kamiichiman": "8:02", "okaido": "8:07", "shiyakusho-mae": "8:11", "matsuyamashi-eki-arr": "8:16" } },
+    { "trip": "E9", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "7:40", "nishi-horibata": "7:45", "jr-matsuyama-ekimae": "7:50", "komachi": "7:56", "hommachi-roku": "7:59", "kiyacho": "8:01", "teppocho": "8:07", "sekijujibyoin-mae": "8:08", "kamiichiman": "8:12", "okaido": "8:17", "shiyakusho-mae": "8:21", "matsuyamashi-eki-arr": "8:26" } },
+    { "trip": "E10", "origin": "matsuyamashi-eki", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "7:50", "nishi-horibata": "7:55", "jr-matsuyama-ekimae": "8:00", "komachi": "8:06", "hommachi-roku": "8:09", "kiyacho": "8:11", "teppocho": "8:17", "sekijujibyoin-mae": "8:18", "kamiichiman": "8:22", "okaido": "8:27", "shiyakusho-mae": "8:31", "matsuyamashi-eki-arr": "8:36" } }
+  ],
+  "daytime_pattern": {
+    "description": "早朝便E10(松山市駅7:50発)の次から、夜間便N1(松山市駅20:40発)の前まで、松山市駅発が10分毎。",
+    "origin": "matsuyamashi-eki",
+    "first_departure": "8:00",
+    "last_departure": "20:30",
+    "interval_min": 10,
+    "saturday_holiday_suspended": false,
+    "segment_offsets_from_origin": {
+      "matsuyamashi-eki": 0, "nishi-horibata": 5, "jr-matsuyama-ekimae": 10,
+      "komachi": 16, "hommachi-roku": 19, "kiyacho": 21, "teppocho": 27,
+      "sekijujibyoin-mae": 28, "kamiichiman": 32, "okaido": 37, "shiyakusho-mae": 41,
+      "matsuyamashi-eki-arr": 46
+    },
+    "offset_note": "offsetは早朝の松山市駅始発便(例:7:50発→各電停)の実測差分から算出。高砂町/清水町/平和通一/警察署前/勝山町/県庁前の中間6電停offsetはsegments.jsonで補間。"
+  },
+  "night_trips": [
+    { "trip": "N1", "origin": "matsuyamashi-eki", "terminus": "full", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "20:40", "nishi-horibata": "20:45", "jr-matsuyama-ekimae": "20:50", "komachi": "20:56", "hommachi-roku": "20:59", "kiyacho": "21:01", "teppocho": "21:07", "sekijujibyoin-mae": "21:08", "kamiichiman": "21:12", "okaido": "21:17", "shiyakusho-mae": "21:21", "matsuyamashi-eki-arr": "21:26" } },
+    { "trip": "N2", "origin": "matsuyamashi-eki", "terminus": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "20:50", "nishi-horibata": "20:55", "jr-matsuyama-ekimae": "21:00", "komachi": "21:06" }, "note": "古町止め" },
+    { "trip": "N3", "origin": "matsuyamashi-eki", "terminus": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "21:00", "nishi-horibata": "21:05", "jr-matsuyama-ekimae": "21:10", "komachi": "21:15" }, "note": "古町止め" },
+    { "trip": "N4", "origin": "matsuyamashi-eki", "terminus": "full", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "21:10", "nishi-horibata": "21:15", "jr-matsuyama-ekimae": "21:20", "komachi": "21:26", "hommachi-roku": "21:29", "kiyacho": "21:31", "teppocho": "21:37", "sekijujibyoin-mae": "21:38", "kamiichiman": "21:42", "okaido": "21:47", "shiyakusho-mae": "21:51", "matsuyamashi-eki-arr": "21:56" } },
+    { "trip": "N5", "origin": "matsuyamashi-eki", "terminus": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "21:20", "nishi-horibata": "21:25", "jr-matsuyama-ekimae": "21:30", "komachi": "21:35" }, "note": "古町止め" },
+    { "trip": "N6", "origin": "matsuyamashi-eki", "terminus": "full", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "21:30", "nishi-horibata": "21:35", "jr-matsuyama-ekimae": "21:40", "komachi": "21:46", "hommachi-roku": "21:49", "kiyacho": "21:51", "teppocho": "21:57", "sekijujibyoin-mae": "21:58", "kamiichiman": "22:02", "okaido": "22:07", "shiyakusho-mae": "22:11", "matsuyamashi-eki-arr": "22:16" } },
+    { "trip": "N7", "origin": "matsuyamashi-eki", "terminus": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "21:40", "nishi-horibata": "21:45", "jr-matsuyama-ekimae": "21:51", "komachi": "21:55" }, "note": "古町止め" },
+    { "trip": "N8", "origin": "matsuyamashi-eki", "terminus": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "22:00", "nishi-horibata": "22:05", "jr-matsuyama-ekimae": "22:10", "komachi": "22:15" }, "note": "古町止め" },
+    { "trip": "N9", "origin": "matsuyamashi-eki", "terminus": "komachi", "saturday_holiday_suspended": false,
+      "stops": { "matsuyamashi-eki": "22:20", "nishi-horibata": "22:25", "jr-matsuyama-ekimae": "22:30", "komachi": "22:35" }, "note": "古町止め・①番最終便" }
+  ]
+}

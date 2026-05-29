@@ -1,0 +1,86 @@
+{
+  "_meta": {
+    "route_id": "5",
+    "route_name": "⑤番 JR松山駅前線（道後温泉⇔JR松山駅前）",
+    "source": "市内電車時刻表 2023年11月1日改正版 PDF より精読",
+    "timetable_revision": "2023-11-01",
+    "structure_note": "両方向。日中は15分毎。各方向に土日祝運休便あり(道後温泉発8:26の1本、JR松山駅前発7:51・8:00の2本)。",
+    "shading_legend": "網掛け=土日祝運休。"
+  },
+  "directions": {
+    "outbound_to_dogo": {
+      "label": "JR松山駅前→道後温泉",
+      "stops_in_order": ["jr-matsuyama-ekimae", "otemachi-ekimae", "nishi-horibata", "minami-horibata", "shiyakusho-mae", "okaido", "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"],
+      "early_morning_trips": [
+        { "trip": "I1", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "6:13", "otemachi-ekimae": "6:14", "nishi-horibata": "6:17", "minami-horibata": "6:20", "shiyakusho-mae": "6:22", "okaido": "6:26", "kamiichiman": "6:31", "dogo-onsen": "6:38" } },
+        { "trip": "I2", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "6:44", "otemachi-ekimae": "6:45", "nishi-horibata": "6:48", "minami-horibata": "6:51", "shiyakusho-mae": "6:53", "okaido": "6:57", "kamiichiman": "7:02", "dogo-onsen": "7:09" } },
+        { "trip": "I3", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "7:09", "otemachi-ekimae": "7:10", "nishi-horibata": "7:13", "minami-horibata": "7:16", "shiyakusho-mae": "7:18", "okaido": "7:22", "kamiichiman": "7:27", "dogo-onsen": "7:34" } },
+        { "trip": "I4", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "7:18", "otemachi-ekimae": "7:19", "nishi-horibata": "7:22", "minami-horibata": "7:25", "shiyakusho-mae": "7:27", "okaido": "7:31", "kamiichiman": "7:36", "dogo-onsen": "7:43" } },
+        { "trip": "I5", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "7:30", "otemachi-ekimae": "7:31", "nishi-horibata": "7:34", "minami-horibata": "7:37", "shiyakusho-mae": "7:39", "okaido": "7:43", "kamiichiman": "7:48", "dogo-onsen": "7:55" } },
+        { "trip": "I6", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "7:41", "otemachi-ekimae": "7:42", "nishi-horibata": "7:45", "minami-horibata": "7:48", "shiyakusho-mae": "7:50", "okaido": "7:54", "kamiichiman": "7:59", "dogo-onsen": "8:06" } },
+        { "trip": "I7", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "7:48", "otemachi-ekimae": "7:49", "nishi-horibata": "7:52", "minami-horibata": "7:55", "shiyakusho-mae": "7:57", "okaido": "8:01", "kamiichiman": "8:06", "dogo-onsen": "8:13" } },
+        { "trip": "I8", "saturday_holiday_suspended": true, "stops": { "jr-matsuyama-ekimae": "7:51", "otemachi-ekimae": "7:52", "nishi-horibata": "7:55", "minami-horibata": "7:58", "shiyakusho-mae": "8:00", "okaido": "8:04", "kamiichiman": "8:09", "dogo-onsen": "8:16" }, "note": "★土日祝運休" },
+        { "trip": "I9", "saturday_holiday_suspended": true, "stops": { "jr-matsuyama-ekimae": "8:00", "otemachi-ekimae": "8:01", "nishi-horibata": "8:04", "minami-horibata": "8:07", "shiyakusho-mae": "8:09", "okaido": "8:13", "kamiichiman": "8:18", "dogo-onsen": "8:25" }, "note": "★土日祝運休" },
+        { "trip": "I10", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "8:05", "otemachi-ekimae": "8:06", "nishi-horibata": "8:09", "minami-horibata": "8:12", "shiyakusho-mae": "8:14", "okaido": "8:18", "kamiichiman": "8:23", "dogo-onsen": "8:30" } },
+        { "trip": "I11", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "8:16", "otemachi-ekimae": "8:17", "nishi-horibata": "8:20", "minami-horibata": "8:23", "shiyakusho-mae": "8:25", "okaido": "8:29", "kamiichiman": "8:34", "dogo-onsen": "8:41" } },
+        { "trip": "I12", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "8:30", "otemachi-ekimae": "8:31", "nishi-horibata": "8:34", "minami-horibata": "8:37", "shiyakusho-mae": "8:39", "okaido": "8:43", "kamiichiman": "8:48", "dogo-onsen": "8:55" } },
+        { "trip": "I13", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "8:40", "otemachi-ekimae": "8:41", "nishi-horibata": "8:44", "minami-horibata": "8:47", "shiyakusho-mae": "8:49", "okaido": "8:53", "kamiichiman": "8:58", "dogo-onsen": "9:05" } },
+        { "trip": "I14", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "8:50", "otemachi-ekimae": "8:51", "nishi-horibata": "8:54", "minami-horibata": "8:57", "shiyakusho-mae": "8:59", "okaido": "9:03", "kamiichiman": "9:08", "dogo-onsen": "9:15" } },
+        { "trip": "I15", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "9:00", "otemachi-ekimae": "9:01", "nishi-horibata": "9:04", "minami-horibata": "9:07", "shiyakusho-mae": "9:09", "okaido": "9:13", "kamiichiman": "9:18", "dogo-onsen": "9:25" } },
+        { "trip": "I16", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "9:12", "otemachi-ekimae": "9:13", "nishi-horibata": "9:16", "minami-horibata": "9:19", "shiyakusho-mae": "9:21", "okaido": "9:25", "kamiichiman": "9:30", "dogo-onsen": "9:37" } },
+        { "trip": "I17", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "9:26", "otemachi-ekimae": "9:27", "nishi-horibata": "9:30", "minami-horibata": "9:33", "shiyakusho-mae": "9:35", "okaido": "9:39", "kamiichiman": "9:44", "dogo-onsen": "9:51" } }
+      ],
+      "daytime_pattern": {
+        "description": "I17(JR松山駅前9:26発)の次から15分毎。夜間便N1(20:41発)の前まで。",
+        "origin": "jr-matsuyama-ekimae", "first_departure": "9:41", "last_departure": "20:26", "interval_min": 15,
+        "saturday_holiday_suspended": false,
+        "segment_offsets_from_origin": { "jr-matsuyama-ekimae": 0, "otemachi-ekimae": 1, "nishi-horibata": 4, "minami-horibata": 7, "shiyakusho-mae": 9, "okaido": 13, "kamiichiman": 18, "dogo-onsen": 25 },
+        "offset_note": "南町/道後公園(上一万-道後温泉間)はsegments.jsonで補間。"
+      },
+      "night_trips": [
+        { "trip": "N1", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "20:41", "otemachi-ekimae": "20:42", "nishi-horibata": "20:45", "minami-horibata": "20:48", "shiyakusho-mae": "20:50", "okaido": "20:54", "kamiichiman": "20:59", "dogo-onsen": "21:06" } },
+        { "trip": "N2", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "21:00", "otemachi-ekimae": "21:01", "nishi-horibata": "21:04", "minami-horibata": "21:07", "shiyakusho-mae": "21:09", "okaido": "21:13", "kamiichiman": "21:18", "dogo-onsen": "21:25" } },
+        { "trip": "N3", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "21:19", "otemachi-ekimae": "21:20", "nishi-horibata": "21:23", "minami-horibata": "21:26", "shiyakusho-mae": "21:28", "okaido": "21:32", "kamiichiman": "21:37", "dogo-onsen": "21:44" } },
+        { "trip": "N4", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "21:39", "otemachi-ekimae": "21:40", "nishi-horibata": "21:43", "minami-horibata": "21:46", "shiyakusho-mae": "21:48", "okaido": "21:52", "kamiichiman": "21:57", "dogo-onsen": "22:04" } },
+        { "trip": "N5", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "22:00", "otemachi-ekimae": "22:01", "nishi-horibata": "22:04", "minami-horibata": "22:07", "shiyakusho-mae": "22:09", "okaido": "22:13", "kamiichiman": "22:18", "dogo-onsen": "22:25" }, "note": "⑤番JR松山駅前発 最終便" }
+      ]
+    },
+    "inbound_to_jr": {
+      "label": "道後温泉→JR松山駅前",
+      "stops_in_order": ["dogo-onsen", "dogo-koen", "minamimachi", "kamiichiman", "okaido", "shiyakusho-mae", "minami-horibata", "nishi-horibata", "otemachi-ekimae", "jr-matsuyama-ekimae"],
+      "early_morning_trips": [
+        { "trip": "O1", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "6:16", "kamiichiman": "6:22", "okaido": "6:27", "shiyakusho-mae": "6:31", "minami-horibata": "6:33", "nishi-horibata": "6:36", "otemachi-ekimae": "6:38", "jr-matsuyama-ekimae": "6:40" } },
+        { "trip": "O2", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "6:42", "kamiichiman": "6:48", "okaido": "6:53", "shiyakusho-mae": "6:57", "minami-horibata": "6:59", "nishi-horibata": "7:02", "otemachi-ekimae": "7:04", "jr-matsuyama-ekimae": "7:06" } },
+        { "trip": "O3", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "7:02", "kamiichiman": "7:08", "okaido": "7:13", "shiyakusho-mae": "7:17", "minami-horibata": "7:19", "nishi-horibata": "7:22", "otemachi-ekimae": "7:24", "jr-matsuyama-ekimae": "7:26" } },
+        { "trip": "O4", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "7:13", "kamiichiman": "7:19", "okaido": "7:24", "shiyakusho-mae": "7:28", "minami-horibata": "7:30", "nishi-horibata": "7:33", "otemachi-ekimae": "7:35", "jr-matsuyama-ekimae": "7:37" } },
+        { "trip": "O5", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "7:20", "kamiichiman": "7:26", "okaido": "7:31", "shiyakusho-mae": "7:35", "minami-horibata": "7:37", "nishi-horibata": "7:40", "otemachi-ekimae": "7:42", "jr-matsuyama-ekimae": "7:44" } },
+        { "trip": "O6", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "7:37", "kamiichiman": "7:43", "okaido": "7:48", "shiyakusho-mae": "7:52", "minami-horibata": "7:54", "nishi-horibata": "7:57", "otemachi-ekimae": "7:59", "jr-matsuyama-ekimae": "8:01" } },
+        { "trip": "O7", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "7:48", "kamiichiman": "7:54", "okaido": "7:59", "shiyakusho-mae": "8:03", "minami-horibata": "8:05", "nishi-horibata": "8:08", "otemachi-ekimae": "8:10", "jr-matsuyama-ekimae": "8:12" } },
+        { "trip": "O8", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "7:58", "kamiichiman": "8:04", "okaido": "8:09", "shiyakusho-mae": "8:13", "minami-horibata": "8:15", "nishi-horibata": "8:18", "otemachi-ekimae": "8:20", "jr-matsuyama-ekimae": "8:22" } },
+        { "trip": "O9", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "8:11", "kamiichiman": "8:17", "okaido": "8:22", "shiyakusho-mae": "8:26", "minami-horibata": "8:28", "nishi-horibata": "8:31", "otemachi-ekimae": "8:33", "jr-matsuyama-ekimae": "8:35" } },
+        { "trip": "O10", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "8:21", "kamiichiman": "8:27", "okaido": "8:32", "shiyakusho-mae": "8:36", "minami-horibata": "8:38", "nishi-horibata": "8:41", "otemachi-ekimae": "8:43", "jr-matsuyama-ekimae": "8:45" } },
+        { "trip": "O11", "saturday_holiday_suspended": true, "stops": { "dogo-onsen": "8:26", "kamiichiman": "8:32", "okaido": "8:38", "shiyakusho-mae": "8:41", "minami-horibata": "8:43", "nishi-horibata": "8:47", "otemachi-ekimae": "8:48", "jr-matsuyama-ekimae": "8:50" }, "note": "★土日祝運休。okaido以降の分単位はPDF再確認推奨" },
+        { "trip": "O12", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "8:33", "kamiichiman": "8:39", "okaido": "8:44", "shiyakusho-mae": "8:48", "minami-horibata": "8:50", "nishi-horibata": "8:53", "otemachi-ekimae": "8:55", "jr-matsuyama-ekimae": "8:57" } },
+        { "trip": "O13", "saturday_holiday_suspended": true, "stops": { "dogo-onsen": "8:37", "kamiichiman": "8:43", "okaido": "8:49", "shiyakusho-mae": "8:52", "minami-horibata": "8:54", "nishi-horibata": "8:58", "otemachi-ekimae": "8:59", "jr-matsuyama-ekimae": "9:01" }, "note": "★土日祝運休。コピペ照合時に全駅一致、ユーザー確認で網掛け便と判明(8:26のO11と合わせ2本運休)" },
+        { "trip": "O14", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "8:45", "kamiichiman": "8:51", "okaido": "8:56", "shiyakusho-mae": "9:00", "minami-horibata": "9:02", "nishi-horibata": "9:05", "otemachi-ekimae": "9:07", "jr-matsuyama-ekimae": "9:09" } },
+        { "trip": "O15", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "8:59", "kamiichiman": "9:05", "okaido": "9:10", "shiyakusho-mae": "9:14", "minami-horibata": "9:16", "nishi-horibata": "9:19", "otemachi-ekimae": "9:21", "jr-matsuyama-ekimae": "9:23" } }
+      ],
+      "daytime_pattern": {
+        "description": "O15(道後温泉8:59発)の次から15分毎。夜間便N1(20:14発)の前まで。早朝便は密で要再確認だが、日中パターンは安定。",
+        "origin": "dogo-onsen", "first_departure": "9:13", "last_departure": "19:59", "interval_min": 15,
+        "saturday_holiday_suspended": false,
+        "segment_offsets_from_origin": { "dogo-onsen": 0, "kamiichiman": 6, "okaido": 11, "shiyakusho-mae": 15, "minami-horibata": 17, "nishi-horibata": 20, "otemachi-ekimae": 22, "jr-matsuyama-ekimae": 24 },
+        "offset_note": "道後公園/南町(道後温泉-上一万間)はsegments.jsonで補間。"
+      },
+      "night_trips": [
+        { "trip": "N1", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "20:14", "kamiichiman": "20:20", "okaido": "20:25", "shiyakusho-mae": "20:29", "minami-horibata": "20:31", "nishi-horibata": "20:34", "otemachi-ekimae": "20:36", "jr-matsuyama-ekimae": "20:38" } },
+        { "trip": "N2", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "20:33", "kamiichiman": "20:39", "okaido": "20:44", "shiyakusho-mae": "20:48", "minami-horibata": "20:50", "nishi-horibata": "20:53", "otemachi-ekimae": "20:55", "jr-matsuyama-ekimae": "20:57" } },
+        { "trip": "N3", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "20:45", "kamiichiman": "20:51", "okaido": "20:56", "shiyakusho-mae": "21:00", "minami-horibata": "21:02", "nishi-horibata": "21:05", "otemachi-ekimae": "21:07", "jr-matsuyama-ekimae": "21:09" } },
+        { "trip": "N4", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "20:57", "kamiichiman": "21:03", "okaido": "21:08", "shiyakusho-mae": "21:12", "minami-horibata": "21:14", "nishi-horibata": "21:17", "otemachi-ekimae": "21:19", "jr-matsuyama-ekimae": "21:21" } },
+        { "trip": "N5", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "21:10", "kamiichiman": "21:16", "okaido": "21:21", "shiyakusho-mae": "21:25", "minami-horibata": "21:27", "nishi-horibata": "21:30", "otemachi-ekimae": "21:32", "jr-matsuyama-ekimae": "21:34" } },
+        { "trip": "N6", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "21:33", "kamiichiman": "21:39", "okaido": "21:44", "shiyakusho-mae": "21:48", "minami-horibata": "21:50", "nishi-horibata": "21:53", "otemachi-ekimae": "21:55", "jr-matsuyama-ekimae": "21:57" } },
+        { "trip": "N7", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "22:00", "kamiichiman": "22:06", "okaido": "22:11", "shiyakusho-mae": "22:15", "minami-horibata": "22:17", "nishi-horibata": "22:20", "otemachi-ekimae": "22:22", "jr-matsuyama-ekimae": "22:24" }, "note": "⑤番道後温泉発 最終便" }
+      ]
+    }
+  }
+}
