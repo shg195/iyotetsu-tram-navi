@@ -29,7 +29,6 @@ export interface Strings {
   flat: string;
   cash: string;
   ic: string;
-  forEach: string;
   status: string;
   official: string;
   about: string;
@@ -44,6 +43,7 @@ export interface Strings {
   noneBody: string;
   endedTitle: string;
   endedBody: string;
+  noNextService: string;
   tomorrow: string;
   firstTrain: string;
   beforeFirstTitle: string;
@@ -80,7 +80,6 @@ export const STRINGS: Record<Lang, Strings> = {
     flat: "市内均一",
     cash: "現金",
     ic: "IC",
-    forEach: "／回",
     status: "運行情報を見る",
     official: "伊予鉄道 公式",
     about: "このページについて",
@@ -94,9 +93,10 @@ export const STRINGS: Record<Lang, Strings> = {
     sameTitle: "同じ電停です",
     sameBody: "出発と到着に別の電停を選んでください。",
     noneTitle: "経路が見つかりません",
-    noneBody: "この区間を直接つなぐ系統がありません。",
+    noneBody: "直通の系統がありません。乗り換えが必要です（乗換案内は今後対応）。",
     endedTitle: "本日の運行は終了しました",
     endedBody: "翌日の始発をご案内します。",
+    noNextService: "翌日も運行がありません。",
     tomorrow: "翌日",
     firstTrain: "始発",
     beforeFirstTitle: "始発前です",
@@ -131,7 +131,6 @@ export const STRINGS: Record<Lang, Strings> = {
     flat: "Flat fare",
     cash: "Cash",
     ic: "IC",
-    forEach: "/ ride",
     status: "Service status",
     official: "Iyo Railway official",
     about: "About this page",
@@ -145,9 +144,10 @@ export const STRINGS: Record<Lang, Strings> = {
     sameTitle: "Same stop",
     sameBody: "Please choose different departure and arrival stops.",
     noneTitle: "No route found",
-    noneBody: "No line directly connects these stops.",
+    noneBody: "No line directly connects these stops. A transfer is required (transfer guidance coming soon).",
     endedTitle: "Today's service has ended",
     endedBody: "Showing tomorrow's first trains.",
+    noNextService: "No service tomorrow either.",
     tomorrow: "Tomorrow",
     firstTrain: "first train",
     beforeFirstTitle: "Before first train",

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Claude Design ハンドオフバンドル（参照原本・実装対象外）は lint しない。
+    "design/**",
   ]),
 ]);
 

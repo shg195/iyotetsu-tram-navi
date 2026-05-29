@@ -15,7 +15,7 @@ import type { StopWithDistance } from "@/lib/geo";
 import { BOARD_THEME as T, HERO_WHITE as HV, hexA } from "@/components/theme";
 import { LineBadge, lineColor, fmtWait } from "@/components/TramAtoms";
 import { StopPicker } from "@/components/StopPicker";
-import { STRINGS, type Lang } from "@/components/i18n";
+import { STRINGS, type Lang, type Strings } from "@/components/i18n";
 
 const SERVICE_STATUS_URL = "https://www.iyotetsu.co.jp/";
 
@@ -30,6 +30,578 @@ function stopName(id: StopId | null, lang: Lang): string {
 function lineLabel(routeName: string): string {
   return routeName.replace(/^.番\s*/, "");
 }
+
+const isLoop = (routeId: RouteId) => routeId === "1" || routeId === "2";
+
+// ── 出発/到着 選択フィールド ──
+const Field = ({
+  label,
+  stopId,
+  kind,
+  lang,
+  usingNearest,
+  t,
+  setPicker,
+}: {
+  label: string;
+  stopId: StopId | null;
+  kind: "from" | "to";
+  lang: Lang;
+  usingNearest: boolean;
+  t: Strings;
+  setPicker: React.Dispatch<React.SetStateAction<"from" | "to" | null>>;
+}) => {
+  const filled = !!stopId;
+  return (
+    <button
+      onClick={() => setPicker(kind)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 13,
+        width: "100%",
+        textAlign: "left",
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+        padding: "14px 16px",
+        fontFamily: T.sans,
+      }}
+    >
+      <div style={{ width: 16, display: "flex", justifyContent: "center", flexShrink: 0 }}>
+        {kind === "from" ? (
+          <div
+            style={{ width: 11, height: 11, borderRadius: 999, border: `3px solid ${T.accent}` }}
+          />
+        ) : (
+          <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
+            <path
+              d="M7 0C3.1 0 0 3 0 6.8 0 11.8 7 16 7 16s7-4.2 7-9.2C14 3 10.9 0 7 0z"
+              fill={T.accent}
+            />
+            <circle cx="7" cy="6.6" r="2.5" fill={T.surface} />
+          </svg>
+        )}
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            color: T.textMuted,
+            letterSpacing: 0.6,
+            textTransform: "uppercase",
+          }}
+        >
+          {label}
+        </div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 2 }}>
+          <span
+            style={{
+              fontSize: 19,
+              fontWeight: 600,
+              color: filled ? T.text : T.textFaint,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {filled ? stopName(stopId, lang) : kind === "from" ? t.pickFrom : t.pickTo}
+          </span>
+          {kind === "from" && usingNearest && filled && (
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 3,
+                fontSize: 11,
+                fontWeight: 600,
+                color: T.accent,
+                flexShrink: 0,
+              }}
+            >
+              <svg width="9" height="9" viewBox="0 0 9 9">
+                <circle cx="4.5" cy="4.5" r="2" fill={T.accent} />
+                <circle
+                  cx="4.5"
+                  cy="4.5"
+                  r="4"
+                  stroke={T.accent}
+                  strokeOpacity="0.4"
+                  strokeWidth="1"
+                  fill="none"
+                />
+              </svg>
+              {t.near}
+            </span>
+          )}
+        </div>
+      </div>
+      <svg width="7" height="12" viewBox="0 0 7 12" style={{ flexShrink: 0 }}>
+        <path
+          d="M1 1l5 5-5 5"
+          stroke={T.textFaint}
+          strokeWidth="1.8"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+};
+
+// ── 時刻行（発→着・所要） ──
+const timesLine = (r: RouteResult, big: boolean, t: Strings, lang: Lang) => (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 7,
+      fontFamily: T.mono,
+      flexWrap: "wrap",
+    }}
+  >
+    <span style={{ fontSize: big ? 15 : 13, fontWeight: 600, color: big ? HV.text : T.text }}>
+      {r.departureTime}
+    </span>
+    <span style={{ fontSize: big ? 11 : 10, color: big ? HV.muted : T.textMuted, fontFamily: T.sans }}>
+      {t.depart}
+    </span>
+    <span style={{ fontSize: big ? 12 : 11, color: big ? HV.muted : T.textFaint }}>→</span>
+    <span style={{ fontSize: big ? 14 : 12.5, fontWeight: 500, color: big ? HV.muted : T.textMuted }}>
+      {r.isEstimated ? "≈" : ""}
+      {r.arrivalTime}
+    </span>
+    <span style={{ fontSize: big ? 11 : 10, color: big ? HV.muted : T.textFaint, fontFamily: T.sans }}>
+      {t.arrive}
+    </span>
+    <span
+      style={{
+        width: 1,
+        height: 11,
+        background: big ? HV.muted : T.hairline,
+        opacity: 0.5,
+        margin: "0 1px",
+      }}
+    />
+    <span style={{ fontSize: big ? 13 : 12, fontWeight: 600, color: big ? HV.muted : T.textMuted }}>
+      {r.durationMin}
+      {lang === "en" ? " min" : "分"}
+    </span>
+  </div>
+);
+
+// ── 次発（主役）カード ──
+const Hero = ({
+  r,
+  lang,
+  t,
+  heroVia,
+  setHeroVia,
+}: {
+  r: RouteResult;
+  lang: Lang;
+  t: Strings;
+  heroVia: boolean;
+  setHeroVia: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const soonNow = r.waitMin <= 0;
+  const heroBorder = `3px solid ${lineColor(r.routeId)}`;
+  const pathNames = viaPath(r.routeId, r.boardStop, r.alightStop, lang).join(" → ");
+  return (
+    <div
+      style={{
+        borderRadius: T.radius,
+        padding: "17px 19px 16px",
+        position: "relative",
+        overflow: "hidden",
+        background: HV.bg,
+        boxShadow: HV.shadow,
+        border: heroBorder,
+      }}
+    >
+      <div style={{ position: "relative" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 10 }}>
+          <LineBadge routeId={r.routeId} size={26} />
+          <span
+            style={{
+              flex: "1 1 auto",
+              fontSize: 16,
+              fontWeight: 700,
+              color: HV.text,
+              fontFamily: T.sans,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {rollSign(r.routeId, r.boardStop, r.alightStop, lang)}
+          </span>
+          {!isLoop(r.routeId) && lang === "ja" && (
+            <span style={{ fontSize: 11, color: HV.muted, fontFamily: T.sans, flexShrink: 0 }}>
+              {lineLabel(r.routeName)}
+            </span>
+          )}
+        </div>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 10, marginBottom: 12 }}>
+          {soonNow ? (
+            <span
+              style={{
+                fontSize: 40,
+                fontWeight: 700,
+                color: HV.num,
+                fontFamily: T.sans,
+                lineHeight: 1,
+                letterSpacing: -0.5,
+              }}
+            >
+              {t.now}
+            </span>
+          ) : (
+            <>
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: HV.muted,
+                  fontFamily: T.sans,
+                  marginBottom: 9,
+                }}
+              >
+                {t.soon}
+              </span>
+              <span
+                style={{
+                  fontSize: HV.numSize,
+                  fontWeight: 700,
+                  color: HV.num,
+                  fontFamily: T.mono,
+                  lineHeight: 0.78,
+                  letterSpacing: -1.5,
+                }}
+              >
+                {r.waitMin}
+              </span>
+              <span
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: HV.muted,
+                  fontFamily: T.sans,
+                  marginBottom: 9,
+                }}
+              >
+                {t.min}
+              </span>
+            </>
+          )}
+        </div>
+        {timesLine(r, true, t, lang)}
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12 }}>
+          <button
+            onClick={() => setHeroVia((v) => !v)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              background: "transparent",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              color: HV.muted,
+              fontFamily: T.sans,
+              fontSize: 11.5,
+              fontWeight: 600,
+            }}
+          >
+            {t.via}
+            <svg
+              width="9"
+              height="6"
+              viewBox="0 0 10 6"
+              style={{ transform: heroVia ? "rotate(180deg)" : "none", transition: "transform .18s" }}
+            >
+              <path
+                d="M1 1l4 4 4-4"
+                stroke={HV.muted}
+                strokeWidth="1.6"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+        {heroVia && (
+          <div style={{ marginTop: 8, fontSize: 12.5, color: HV.text, lineHeight: 1.7 }}>
+            {pathNames}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ── 一覧の各便（待ち時間 or 発車時刻） ──
+const Row = ({
+  r,
+  idx,
+  last,
+  showClock,
+  openRoutes,
+  setOpenRoutes,
+  lang,
+  t,
+}: {
+  r: RouteResult;
+  idx: number;
+  last: boolean;
+  showClock: boolean;
+  openRoutes: Record<string, boolean>;
+  setOpenRoutes: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  lang: Lang;
+  t: Strings;
+}) => {
+  const rid = idx + "_" + r.departureTime + "_" + r.routeId;
+  const open = !!openRoutes[rid];
+  return (
+    <div style={{ borderBottom: last ? "none" : `1px solid ${T.hairline}` }}>
+      <button
+        onClick={() => setOpenRoutes((p) => ({ ...p, [rid]: !p[rid] }))}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          width: "100%",
+          textAlign: "left",
+          padding: "13px 16px",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+          fontFamily: T.sans,
+        }}
+      >
+        <LineBadge routeId={r.routeId} size={26} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+            <span
+              style={{
+                flex: 1,
+                minWidth: 0,
+                fontSize: 14.5,
+                fontWeight: 700,
+                color: T.text,
+                lineHeight: 1.25,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {rollSign(r.routeId, r.boardStop, r.alightStop, lang)}
+            </span>
+            <span
+              style={{
+                flexShrink: 0,
+                fontSize: 14,
+                fontWeight: 700,
+                color: T.accent,
+                fontFamily: T.sans,
+              }}
+            >
+              {showClock ? r.departureTime : fmtWait(r.waitMin, lang, t)}
+            </span>
+          </div>
+          <div style={{ marginTop: 4 }}>{timesLine(r, false, t, lang)}</div>
+        </div>
+        <svg
+          width="6"
+          height="11"
+          viewBox="0 0 7 12"
+          style={{ flexShrink: 0, transform: open ? "rotate(90deg)" : "none", transition: "transform .18s" }}
+        >
+          <path
+            d="M1 1l5 5-5 5"
+            stroke={T.textFaint}
+            strokeWidth="1.8"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {open && (
+        <div style={{ padding: "0 16px 14px 54px", fontFamily: T.sans }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: T.textMuted, letterSpacing: 0.4, marginBottom: 4 }}>
+            {t.via}
+          </div>
+          <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.7 }}>
+            {viaPath(r.routeId, r.boardStop, r.alightStop, lang).join(" → ")}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const Card = ({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) => (
+  <div
+    style={{
+      background: T.surface,
+      borderRadius: T.radius,
+      boxShadow: T.shadowSm,
+      border: `1px solid ${T.border}`,
+      overflow: "hidden",
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+
+const Notice = ({ title, body, tone }: { title: string; body: string; tone?: "warn" }) => (
+  <Card style={{ padding: "18px 18px" }}>
+    <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: 999,
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: tone === "warn" ? hexA(T.accent, 0.14) : T.surfaceAlt,
+          color: T.accent,
+          fontSize: 16,
+          fontWeight: 700,
+          fontFamily: T.mono,
+        }}
+      >
+        i
+      </div>
+      <div>
+        <div style={{ fontSize: 15, fontWeight: 700, color: T.text, fontFamily: T.sans }}>{title}</div>
+        <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4, lineHeight: 1.5, fontFamily: T.sans }}>
+          {body}
+        </div>
+      </div>
+    </div>
+  </Card>
+);
+
+const MoreLess = ({
+  shown,
+  total,
+  limit,
+  setLimit,
+  t,
+}: {
+  shown: number;
+  total: number;
+  limit: number;
+  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  t: Strings;
+}) =>
+  total > shown || limit > 4 ? (
+    <div style={{ display: "flex", gap: 8 }}>
+      {total > shown && (
+        <button
+          onClick={() => setLimit(limit + 4)}
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 7,
+            padding: "13px",
+            background: "transparent",
+            border: `1px solid ${T.border}`,
+            borderRadius: T.radiusSm,
+            cursor: "pointer",
+            fontSize: 13.5,
+            fontWeight: 600,
+            color: T.textMuted,
+            fontFamily: T.sans,
+          }}
+        >
+          {t.more}
+          <svg width="11" height="11" viewBox="0 0 12 12">
+            <path d="M6 1v10M1 6l5 5 5-5" stroke={T.textMuted} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
+      {limit > 4 && (
+        <button
+          onClick={() => setLimit(4)}
+          style={{
+            flex: total > shown ? "none" : 1,
+            padding: "13px 16px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 7,
+            background: "transparent",
+            border: `1px solid ${T.border}`,
+            borderRadius: T.radiusSm,
+            cursor: "pointer",
+            fontSize: 13.5,
+            fontWeight: 600,
+            color: T.textMuted,
+            fontFamily: T.sans,
+          }}
+        >
+          {t.less}
+          <svg width="11" height="11" viewBox="0 0 12 12">
+            <path d="M6 11V1M1 6l5-5 5 5" stroke={T.textMuted} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
+    </div>
+  ) : null;
+
+// ── 運賃カード（大人/小児 × 現金/IC、均一運賃 spec 3.7） ──
+const FareCard = ({ t }: { t: Strings }) => {
+  const fare = getFare();
+  const fareCells: [string, number][] = [
+    [`${t.adult} · ${t.cash}`, fare.adultCash],
+    [`${t.adult} · ${t.ic}`, fare.adultIc],
+    [`${t.child} · ${t.cash}`, fare.childCash],
+    [`${t.child} · ${t.ic}`, fare.childIc],
+  ];
+  return (
+    <Card style={{ padding: "14px 16px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: T.text, fontFamily: T.sans }}>{t.fare}</span>
+        <span
+          style={{
+            fontSize: 10.5,
+            fontWeight: 600,
+            color: T.accent,
+            padding: "2px 8px",
+            borderRadius: 999,
+            background: hexA(T.accent, 0.1),
+            fontFamily: T.sans,
+          }}
+        >
+          {t.flat}
+        </span>
+      </div>
+      <div style={{ display: "flex", gap: 8 }}>
+        {fareCells.map(([lab, val], i) => (
+          <div key={i} style={{ flex: 1, background: T.surfaceAlt, borderRadius: T.radiusSm, padding: "9px 8px" }}>
+            <div style={{ fontSize: 10, color: T.textMuted, fontFamily: T.sans, marginBottom: 3, whiteSpace: "nowrap" }}>
+              {lab}
+            </div>
+            <div style={{ fontFamily: T.mono, fontWeight: 600, color: T.text }}>
+              <span style={{ fontSize: 11 }}>¥</span>
+              <span style={{ fontSize: 18 }}>{val}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+};
 
 export function TramApp() {
   const [lang, setLang] = useState<Lang>("ja");
@@ -103,484 +675,6 @@ export function TramApp() {
     setOpenRoutes({});
   };
 
-  // ── 出発/到着 選択フィールド ──
-  const Field = ({
-    label,
-    stopId,
-    kind,
-  }: {
-    label: string;
-    stopId: StopId | null;
-    kind: "from" | "to";
-  }) => {
-    const filled = !!stopId;
-    return (
-      <button
-        onClick={() => setPicker(kind)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 13,
-          width: "100%",
-          textAlign: "left",
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-          padding: "14px 16px",
-          fontFamily: T.sans,
-        }}
-      >
-        <div style={{ width: 16, display: "flex", justifyContent: "center", flexShrink: 0 }}>
-          {kind === "from" ? (
-            <div
-              style={{ width: 11, height: 11, borderRadius: 999, border: `3px solid ${T.accent}` }}
-            />
-          ) : (
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
-              <path
-                d="M7 0C3.1 0 0 3 0 6.8 0 11.8 7 16 7 16s7-4.2 7-9.2C14 3 10.9 0 7 0z"
-                fill={T.accent}
-              />
-              <circle cx="7" cy="6.6" r="2.5" fill={T.surface} />
-            </svg>
-          )}
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              color: T.textMuted,
-              letterSpacing: 0.6,
-              textTransform: "uppercase",
-            }}
-          >
-            {label}
-          </div>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 2 }}>
-            <span
-              style={{
-                fontSize: 19,
-                fontWeight: 600,
-                color: filled ? T.text : T.textFaint,
-                lineHeight: 1.2,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {filled ? stopName(stopId, lang) : kind === "from" ? t.pickFrom : t.pickTo}
-            </span>
-            {kind === "from" && usingNearest && filled && (
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 3,
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: T.accent,
-                  flexShrink: 0,
-                }}
-              >
-                <svg width="9" height="9" viewBox="0 0 9 9">
-                  <circle cx="4.5" cy="4.5" r="2" fill={T.accent} />
-                  <circle
-                    cx="4.5"
-                    cy="4.5"
-                    r="4"
-                    stroke={T.accent}
-                    strokeOpacity="0.4"
-                    strokeWidth="1"
-                    fill="none"
-                  />
-                </svg>
-                {t.near}
-              </span>
-            )}
-          </div>
-        </div>
-        <svg width="7" height="12" viewBox="0 0 7 12" style={{ flexShrink: 0 }}>
-          <path
-            d="M1 1l5 5-5 5"
-            stroke={T.textFaint}
-            strokeWidth="1.8"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-    );
-  };
-
-  // ── 時刻行（発→着・所要） ──
-  const timesLine = (r: RouteResult, big: boolean) => (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 7,
-        fontFamily: T.mono,
-        flexWrap: "wrap",
-      }}
-    >
-      <span style={{ fontSize: big ? 15 : 13, fontWeight: 600, color: big ? HV.text : T.text }}>
-        {r.departureTime}
-      </span>
-      <span style={{ fontSize: big ? 11 : 10, color: big ? HV.muted : T.textMuted, fontFamily: T.sans }}>
-        {t.depart}
-      </span>
-      <span style={{ fontSize: big ? 12 : 11, color: big ? HV.muted : T.textFaint }}>→</span>
-      <span style={{ fontSize: big ? 14 : 12.5, fontWeight: 500, color: big ? HV.muted : T.textMuted }}>
-        {r.isEstimated ? "≈" : ""}
-        {r.arrivalTime}
-      </span>
-      <span style={{ fontSize: big ? 11 : 10, color: big ? HV.muted : T.textFaint, fontFamily: T.sans }}>
-        {t.arrive}
-      </span>
-      <span
-        style={{
-          width: 1,
-          height: 11,
-          background: big ? HV.muted : T.hairline,
-          opacity: 0.5,
-          margin: "0 1px",
-        }}
-      />
-      <span style={{ fontSize: big ? 13 : 12, fontWeight: 600, color: big ? HV.muted : T.textMuted }}>
-        {r.durationMin}
-        {lang === "en" ? " min" : "分"}
-      </span>
-    </div>
-  );
-
-  const isLoop = (routeId: RouteId) => routeId === "1" || routeId === "2";
-
-  // ── 次発（主役）カード ──
-  const Hero = ({ r }: { r: RouteResult }) => {
-    const soonNow = r.waitMin <= 0;
-    const heroBorder = `3px solid ${lineColor(r.routeId)}`;
-    const pathNames = viaPath(r.routeId, r.boardStop, r.alightStop, lang).join(" → ");
-    return (
-      <div
-        style={{
-          borderRadius: T.radius,
-          padding: "17px 19px 16px",
-          position: "relative",
-          overflow: "hidden",
-          background: HV.bg,
-          boxShadow: HV.shadow,
-          border: heroBorder,
-        }}
-      >
-        <div style={{ position: "relative" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 10 }}>
-            <LineBadge routeId={r.routeId} size={26} />
-            <span
-              style={{
-                flex: "1 1 auto",
-                fontSize: 16,
-                fontWeight: 700,
-                color: HV.text,
-                fontFamily: T.sans,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {rollSign(r.routeId, r.boardStop, r.alightStop, lang)}
-            </span>
-            {!isLoop(r.routeId) && lang === "ja" && (
-              <span style={{ fontSize: 11, color: HV.muted, fontFamily: T.sans, flexShrink: 0 }}>
-                {lineLabel(r.routeName)}
-              </span>
-            )}
-          </div>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 10, marginBottom: 12 }}>
-            {soonNow ? (
-              <span
-                style={{
-                  fontSize: 40,
-                  fontWeight: 700,
-                  color: HV.num,
-                  fontFamily: T.sans,
-                  lineHeight: 1,
-                  letterSpacing: -0.5,
-                }}
-              >
-                {t.now}
-              </span>
-            ) : (
-              <>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    color: HV.muted,
-                    fontFamily: T.sans,
-                    marginBottom: 9,
-                  }}
-                >
-                  {t.soon}
-                </span>
-                <span
-                  style={{
-                    fontSize: HV.numSize,
-                    fontWeight: 700,
-                    color: HV.num,
-                    fontFamily: T.mono,
-                    lineHeight: 0.78,
-                    letterSpacing: -1.5,
-                  }}
-                >
-                  {r.waitMin}
-                </span>
-                <span
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: HV.muted,
-                    fontFamily: T.sans,
-                    marginBottom: 9,
-                  }}
-                >
-                  {t.min}
-                </span>
-              </>
-            )}
-          </div>
-          {timesLine(r, true)}
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12 }}>
-            <button
-              onClick={() => setHeroVia((v) => !v)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 5,
-                background: "transparent",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-                color: HV.muted,
-                fontFamily: T.sans,
-                fontSize: 11.5,
-                fontWeight: 600,
-              }}
-            >
-              {t.via}
-              <svg
-                width="9"
-                height="6"
-                viewBox="0 0 10 6"
-                style={{ transform: heroVia ? "rotate(180deg)" : "none", transition: "transform .18s" }}
-              >
-                <path
-                  d="M1 1l4 4 4-4"
-                  stroke={HV.muted}
-                  strokeWidth="1.6"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-          {heroVia && (
-            <div style={{ marginTop: 8, fontSize: 12.5, color: HV.text, lineHeight: 1.7 }}>
-              {pathNames}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  // ── 一覧の各便（待ち時間 or 発車時刻） ──
-  const Row = ({ r, idx, last, showClock }: { r: RouteResult; idx: number; last: boolean; showClock: boolean }) => {
-    const rid = idx + "_" + r.departureTime + "_" + r.routeId;
-    const open = !!openRoutes[rid];
-    return (
-      <div style={{ borderBottom: last ? "none" : `1px solid ${T.hairline}` }}>
-        <button
-          onClick={() => setOpenRoutes((p) => ({ ...p, [rid]: !p[rid] }))}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            width: "100%",
-            textAlign: "left",
-            padding: "13px 16px",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-            fontFamily: T.sans,
-          }}
-        >
-          <LineBadge routeId={r.routeId} size={26} />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-              <span
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  fontSize: 14.5,
-                  fontWeight: 700,
-                  color: T.text,
-                  lineHeight: 1.25,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {rollSign(r.routeId, r.boardStop, r.alightStop, lang)}
-              </span>
-              <span
-                style={{
-                  flexShrink: 0,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: T.accent,
-                  fontFamily: T.sans,
-                }}
-              >
-                {showClock ? r.departureTime : fmtWait(r.waitMin, lang, t)}
-              </span>
-            </div>
-            <div style={{ marginTop: 4 }}>{timesLine(r, false)}</div>
-          </div>
-          <svg
-            width="6"
-            height="11"
-            viewBox="0 0 7 12"
-            style={{ flexShrink: 0, transform: open ? "rotate(90deg)" : "none", transition: "transform .18s" }}
-          >
-            <path
-              d="M1 1l5 5-5 5"
-              stroke={T.textFaint}
-              strokeWidth="1.8"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-        {open && (
-          <div style={{ padding: "0 16px 14px 54px", fontFamily: T.sans }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: T.textMuted, letterSpacing: 0.4, marginBottom: 4 }}>
-              {t.via}
-            </div>
-            <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.7 }}>
-              {viaPath(r.routeId, r.boardStop, r.alightStop, lang).join(" → ")}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const Card = ({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) => (
-    <div
-      style={{
-        background: T.surface,
-        borderRadius: T.radius,
-        boxShadow: T.shadowSm,
-        border: `1px solid ${T.border}`,
-        overflow: "hidden",
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-
-  const Notice = ({ title, body, tone }: { title: string; body: string; tone?: "warn" }) => (
-    <Card style={{ padding: "18px 18px" }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-        <div
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: 999,
-            flexShrink: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: tone === "warn" ? hexA(T.accent, 0.14) : T.surfaceAlt,
-            color: T.accent,
-            fontSize: 16,
-            fontWeight: 700,
-            fontFamily: T.mono,
-          }}
-        >
-          i
-        </div>
-        <div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: T.text, fontFamily: T.sans }}>{title}</div>
-          <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4, lineHeight: 1.5, fontFamily: T.sans }}>
-            {body}
-          </div>
-        </div>
-      </div>
-    </Card>
-  );
-
-  const MoreLess = ({ shown, total }: { shown: number; total: number }) =>
-    total > shown || limit > 4 ? (
-      <div style={{ display: "flex", gap: 8 }}>
-        {total > shown && (
-          <button
-            onClick={() => setLimit(limit + 4)}
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 7,
-              padding: "13px",
-              background: "transparent",
-              border: `1px solid ${T.border}`,
-              borderRadius: T.radiusSm,
-              cursor: "pointer",
-              fontSize: 13.5,
-              fontWeight: 600,
-              color: T.textMuted,
-              fontFamily: T.sans,
-            }}
-          >
-            {t.more}
-            <svg width="11" height="11" viewBox="0 0 12 12">
-              <path d="M6 1v10M1 6l5 5 5-5" stroke={T.textMuted} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
-        {limit > 4 && (
-          <button
-            onClick={() => setLimit(4)}
-            style={{
-              flex: total > shown ? "none" : 1,
-              padding: "13px 16px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 7,
-              background: "transparent",
-              border: `1px solid ${T.border}`,
-              borderRadius: T.radiusSm,
-              cursor: "pointer",
-              fontSize: 13.5,
-              fontWeight: 600,
-              color: T.textMuted,
-              fontFamily: T.sans,
-            }}
-          >
-            {t.less}
-            <svg width="11" height="11" viewBox="0 0 12 12">
-              <path d="M6 11V1M1 6l5-5 5 5" stroke={T.textMuted} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
-      </div>
-    ) : null;
-
   // ── 結果本体 ──
   let body: React.ReactNode;
   if (!result) {
@@ -593,28 +687,42 @@ export function TramApp() {
     const shown = result.routes.slice(0, limit);
     body = (
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <Notice title={t.endedTitle} body={t.endedBody} tone="warn" />
-        <div>
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: T.textMuted,
-              letterSpacing: 0.6,
-              textTransform: "uppercase",
-              padding: "0 4px 8px",
-              fontFamily: T.sans,
-            }}
-          >
-            {t.tomorrow} · {t.firstTrain}
-          </div>
-          <Card>
-            {shown.map((r, i) => (
-              <Row key={i} r={r} idx={i} last={i === shown.length - 1} showClock />
-            ))}
-          </Card>
-        </div>
-        <MoreLess shown={shown.length} total={result.routes.length} />
+        <Notice title={t.endedTitle} body={shown.length > 0 ? t.endedBody : t.noNextService} tone="warn" />
+        {shown.length > 0 && (
+          <>
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: T.textMuted,
+                  letterSpacing: 0.6,
+                  textTransform: "uppercase",
+                  padding: "0 4px 8px",
+                  fontFamily: T.sans,
+                }}
+              >
+                {t.tomorrow} · {t.firstTrain}
+              </div>
+              <Card>
+                {shown.map((r, i) => (
+                  <Row
+                    key={i}
+                    r={r}
+                    idx={i}
+                    last={i === shown.length - 1}
+                    showClock
+                    openRoutes={openRoutes}
+                    setOpenRoutes={setOpenRoutes}
+                    lang={lang}
+                    t={t}
+                  />
+                ))}
+              </Card>
+            </div>
+            <MoreLess shown={shown.length} total={result.routes.length} limit={limit} setLimit={setLimit} t={t} />
+          </>
+        )}
       </div>
     );
   } else {
@@ -626,60 +734,28 @@ export function TramApp() {
         {result.status === "before_first" && (
           <Notice title={t.beforeFirstTitle} body={t.beforeFirstBody} />
         )}
-        {first && <Hero r={first} />}
+        {first && <Hero r={first} lang={lang} t={t} heroVia={heroVia} setHeroVia={setHeroVia} />}
         {rest.length > 0 && (
           <Card>
             {rest.map((r, i) => (
-              <Row key={i} r={r} idx={i + 1} last={i === rest.length - 1} showClock={false} />
+              <Row
+                key={i}
+                r={r}
+                idx={i + 1}
+                last={i === rest.length - 1}
+                showClock={false}
+                openRoutes={openRoutes}
+                setOpenRoutes={setOpenRoutes}
+                lang={lang}
+                t={t}
+              />
             ))}
           </Card>
         )}
-        <MoreLess shown={shown.length} total={result.routes.length} />
+        <MoreLess shown={shown.length} total={result.routes.length} limit={limit} setLimit={setLimit} t={t} />
       </div>
     );
   }
-
-  // ── 運賃カード（大人/小児 × 現金/IC、均一運賃 spec 3.7） ──
-  const fare = getFare();
-  const fareCells: [string, number][] = [
-    [`${t.adult} · ${t.cash}`, fare.adultCash],
-    [`${t.adult} · ${t.ic}`, fare.adultIc],
-    [`${t.child} · ${t.cash}`, fare.childCash],
-    [`${t.child} · ${t.ic}`, fare.childIc],
-  ];
-  const FareCard = () => (
-    <Card style={{ padding: "14px 16px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: T.text, fontFamily: T.sans }}>{t.fare}</span>
-        <span
-          style={{
-            fontSize: 10.5,
-            fontWeight: 600,
-            color: T.accent,
-            padding: "2px 8px",
-            borderRadius: 999,
-            background: hexA(T.accent, 0.1),
-            fontFamily: T.sans,
-          }}
-        >
-          {t.flat}
-        </span>
-      </div>
-      <div style={{ display: "flex", gap: 8 }}>
-        {fareCells.map(([lab, val], i) => (
-          <div key={i} style={{ flex: 1, background: T.surfaceAlt, borderRadius: T.radiusSm, padding: "9px 8px" }}>
-            <div style={{ fontSize: 10, color: T.textMuted, fontFamily: T.sans, marginBottom: 3, whiteSpace: "nowrap" }}>
-              {lab}
-            </div>
-            <div style={{ fontFamily: T.mono, fontWeight: 600, color: T.text }}>
-              <span style={{ fontSize: 11 }}>¥</span>
-              <span style={{ fontSize: 18 }}>{val}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
 
   // ── 現在時刻（秒表示、spec 6.1.3） ──
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -769,9 +845,9 @@ export function TramApp() {
       <div style={{ padding: "14px 16px 26px" }}>
         {/* selector */}
         <Card style={{ position: "relative", marginBottom: 16 }}>
-          <Field label={t.from} stopId={fromId} kind="from" />
+          <Field label={t.from} stopId={fromId} kind="from" lang={lang} usingNearest={usingNearest} t={t} setPicker={setPicker} />
           <div style={{ height: 1, background: T.hairline, marginLeft: 45 }} />
-          <Field label={t.to} stopId={toId} kind="to" />
+          <Field label={t.to} stopId={toId} kind="to" lang={lang} usingNearest={usingNearest} t={t} setPicker={setPicker} />
           <button
             onClick={swap}
             title={t.swap}
@@ -808,7 +884,7 @@ export function TramApp() {
         {body}
 
         <div style={{ marginTop: 16 }}>
-          <FareCard />
+          <FareCard t={t} />
         </div>
 
         {/* 運行情報リンク（spec 6.3） */}
