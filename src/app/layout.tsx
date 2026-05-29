@@ -13,7 +13,7 @@ const plexSansJp = IBM_Plex_Sans_JP({
 export const metadata: Metadata = {
   title: "松山市内電車ナビ",
   description:
-    "伊予鉄道 市内電車（路面電車）の出発・到着電停を選ぶだけで、次に乗れる電車の発車時刻・系統・所要時間・運賃がわかる非公式案内アプリ。",
+    "伊予鉄道 市内電車（路面電車）の出発・到着駅を選ぶだけで、次に乗れる電車の発車時刻・系統・所要時間・運賃がわかる非公式案内アプリ。",
 };
 
 export default function RootLayout({

@@ -60,6 +60,15 @@ export function StopPicker({
     return () => clearTimeout(id);
   }, []);
 
+  // ボトムシート表示中は背景（本命UI）のスクロール貫通を防ぐ。閉じたら元に戻す。
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
   const results: Stop[] | null = q.trim() ? searchStops(q) : null;
 
   const rowBtn = (stopId: StopId, opts: RowOpts = {}) => {
@@ -232,7 +241,7 @@ export function StopPicker({
                 outline: "none",
                 background: "transparent",
                 padding: "11px 0",
-                fontSize: 15,
+                fontSize: 16, // iOS Safari のフォーカス時自動ズーム回避（16px未満で発生）
                 color: T.text,
                 fontFamily: T.sans,
               }}
