@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>市内電車ナビ — 松山・伊予鉄道</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Mono:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; min-height: 100%; }
+  body { font-family: "IBM Plex Sans JP", -apple-system, system-ui, sans-serif; background: #e7e5df; -webkit-font-smoothing: antialiased; }
+  #root { min-height: 100%; }
+  @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  @keyframes nowpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  button { font-family: inherit; }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="tram-data.js"></script>
+<script src="themes.js"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tram-atoms.jsx"></script>
+<script type="text/babel" src="tram-picker.jsx"></script>
+<script type="text/babel" src="tram-app.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "lang": "ja",
+  "clockLive": true,
+  "demoTime": 1033,
+  "dayType": "weekday",
+  "locationAllowed": true,
+  "heroBorderMode": "系統色",
+  "numFont": "Plex Sans"
+}/*EDITMODE-END*/;
+
+function fmtClock(min) {
+  const h = Math.floor(min / 60), m = min % 60;
+  return h + ':' + String(m).padStart(2, '0');
+}
+
+const HERO_ORDER = ['bright', 'white', 'navy'];
+
+// Numeral fonts — DM Mono / Plex Sans have a plain (un-dotted) zero;
+// Space Mono uses a slashed zero; Plex Mono (current) has the dotted zero.
+const NUM_FONTS = {
+  'DM Mono': "'DM Mono', ui-monospace, monospace",
+  'Plex Sans': "'IBM Plex Sans JP', system-ui, sans-serif",
+  'Space Mono': "'Space Mono', ui-monospace, monospace",
+  'Plex Mono': "'IBM Plex Mono', ui-monospace, monospace",
+};
+
+function Studio() {
+  const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [, setTick] = useState(0);
+  const demoBaseRef = React.useRef({ min: tw.demoTime, at: Date.now() });
+
+  // let the in-app JA/EN toggle drive the shared language
+  useEffect(() => { window.__setTramLang = (L) => setTweak('lang', L); }, [setTweak]);
+
+  // re-anchor the demo clock whenever the start minute (or mode) changes
+  useEffect(() => { demoBaseRef.current = { min: tw.demoTime, at: Date.now() }; }, [tw.demoTime, tw.clockLive]);
+
+  // tick every second so the on-screen clock advances
+  useEffect(() => {
+    const id = setInterval(() => setTick(x => x + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  let nowSec;
+  if (tw.clockLive) {
+    const d = new Date();
+    nowSec = d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+  } else {
+    const el = Math.floor((Date.now() - demoBaseRef.current.at) / 1000);
+    nowSec = (demoBaseRef.current.min * 60 + el) % 86400;
+  }
+  const nowMin = Math.floor(nowSec / 60);
+
+  const shared = {
+    lang: tw.lang,
+    nowMin,
+    nowSec,
+    dayType: tw.dayType,
+    locationAllowed: tw.locationAllowed,
+  };
+
+  const theme = { ...window.TRAM_THEMES.board, mono: NUM_FONTS[tw.numFont] || window.TRAM_THEMES.board.mono };
+
+  return (
+    <React.Fragment>
+      <div style={{ minHeight: '100%', background: '#e7e5df', boxSizing: 'border-box' }}>
+        <div style={{ maxWidth: 440, margin: '0 auto', minHeight: '100vh', background: theme.bg, boxShadow: '0 0 60px rgba(20,20,15,0.09)' }}>
+          <TramApp theme={theme} lang={shared.lang} nowMin={shared.nowMin} nowSec={shared.nowSec} dayType={shared.dayType} locationAllowed={shared.locationAllowed} heroVariant="white" heroBorderMode={tw.heroBorderMode} />
+        </div>
+      </div>
+
+      <TweaksPanel>
+        <TweakSection label="表示 / Display" />
+        <TweakRadio label="言語 Language" value={tw.lang}
+          options={['ja', 'en']} onChange={(v) => setTweak('lang', v)} />
+        <TweakRadio label="次発カードの枠 Frame" value={tw.heroBorderMode}
+          options={['系統色', '黒']} onChange={(v) => setTweak('heroBorderMode', v)} />
+        <TweakSelect label="数字フォント Numerals" value={tw.numFont}
+          options={Object.keys(NUM_FONTS)} onChange={(v) => setTweak('numFont', v)} />
+        <TweakSection label="状況シミュレーション / Context" />
+        <TweakToggle label="現在時刻（ライブ） Live clock" value={tw.clockLive}
+          onChange={(v) => setTweak('clockLive', v)} />
+        {!tw.clockLive && (
+          <TweakSlider label={"デモ時刻（起点）" + fmtClock(tw.demoTime)} value={tw.demoTime}
+            min={300} max={1439} step={1} onChange={(v) => setTweak('demoTime', v)} />
+        )}
+        <TweakRadio label="曜日 Day" value={tw.dayType}
+          options={['weekday', 'weekend']} onChange={(v) => setTweak('dayType', v)} />
+        <TweakToggle label="位置情報を許可 Location" value={tw.locationAllowed}
+          onChange={(v) => setTweak('locationAllowed', v)} />
+        <div style={{ fontSize: 11, lineHeight: 1.5, color: '#8a8a8a', padding: '4px 2px 2px' }}>
+          ・デモ時刻を 22:40 以降にすると「運行終了→翌日始発」<br />
+          ・曜日を weekend にすると ⑥本町線が運休<br />
+          ・位置情報 OFF で「最寄り提案なし→手動選択」
+        </div>
+      </TweaksPanel>
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Studio />);
+</script>
+</body>
+</html>
