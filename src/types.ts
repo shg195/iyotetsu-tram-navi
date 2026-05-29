@@ -188,6 +188,14 @@ export interface NormalizedSection {
   explicitTrips?: Trip[]; // ⑥番のみ。全便が明示で入る
 }
 
+/** 解決済みの 1電停の時刻（モジュール2の出力、spec 5.2 / 6.2）。 */
+export interface ResolvedStopTime {
+  stopId: StopId;
+  minutes: number; // 0時からの分。時刻計算用
+  time: TimeStr; // 表示用 "H:MM"
+  isEstimated: boolean; // 中間電停の補間値か（true=目安、spec 6.2）
+}
+
 /** 経路探索の結果 1件（spec 4章 / 5.3）。 */
 export interface RouteResult {
   routeId: RouteId;
