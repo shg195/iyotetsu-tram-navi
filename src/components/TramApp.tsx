@@ -646,8 +646,14 @@ export function TramApp() {
   }, []);
 
   // ライブ時計（秒、spec 6.1.3）。
+  // 初期 now は時刻依存のため SSR とクライアント初回で値がずれる。mounted で初回描画を
+  // 揃え（プレースホルダ）、マウント後にのみ実時刻を描画してハイドレーション不一致を防ぐ。
   const [now, setNow] = useState<Date>(() => new Date());
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    // マウント検知のための意図的な set（ハイドレーション対策）。
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
@@ -815,9 +821,9 @@ export function TramApp() {
             </span>
             <span style={{ fontFamily: T.mono, fontWeight: 700, color: T.text, letterSpacing: 0.3, whiteSpace: "nowrap" }}>
               <span style={{ fontSize: 21 }}>
-                {hh}:{pad(mm)}
+                {mounted ? `${hh}:${pad(mm)}` : "--:--"}
               </span>
-              <span style={{ fontSize: 15, color: T.textMuted }}>:{pad(ss)}</span>
+              <span style={{ fontSize: 15, color: T.textMuted }}>{mounted ? `:${pad(ss)}` : ":--"}</span>
             </span>
           </div>
         </div>
