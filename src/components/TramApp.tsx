@@ -17,7 +17,8 @@ import { LineBadge, lineColor, fmtWait } from "@/components/TramAtoms";
 import { StopPicker } from "@/components/StopPicker";
 import { STRINGS, type Lang, type Strings } from "@/components/i18n";
 
-const SERVICE_STATUS_URL = "https://www.iyotetsu.co.jp/";
+// 伊予鉄道 公式「電車・バス情報」（運行状況）ページ（spec 6.3、2026-05 実URL確認済み）
+const SERVICE_STATUS_URL = "https://www.iyotetsu.co.jp/kinkyu/";
 
 function stopName(id: StopId | null, lang: Lang): string {
   if (!id) return "";

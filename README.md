@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 伊予鉄道 市内電車 乗換・時刻案内アプリ
 
-## Getting Started
+伊予鉄道 市内電車（路面電車）の出発電停と到着電停を選ぶだけで、最短で乗れる電車の発車時刻・系統・所要時間・運賃を表示するWebアプリです。
 
-First, run the development server:
+> **非公式アプリです。** 伊予鉄道が提供する公式サービスではありません。表示する時刻・所要時間は目安であり、正確・最新の情報は必ず公式の時刻表・運行情報をご確認ください。
+
+## 対象
+
+- 伊予鉄道 市内電車 全5系統（①②③⑤番、④は欠番、⑥番）・全29電停。
+- 郊外電車・バスは対象外です。
+
+## 主な機能（Phase 1）
+
+1. 出発電停・到着電停の選択（あいまい検索対応）
+2. 次発・次々発の表示（「次は約N分後」を含む）
+3. 乗り換えなし経路の探索と複数経路の比較（到着が早い順に列挙）
+4. 平日／土日祝（年末年始含む）の自動判定
+5. 運賃表示（大人・小児／現金・IC）
+6. 公式運行情報への外部リンク
+7. 現在地から最寄り電停を提示（到着電停のみ指定でも出発を最寄りに自動設定）
+
+乗り換えあり経路、電停別の全系統時刻表閲覧、一日乗車券の損得案内、PWA（オフライン対応）は本リリースには含みません（Phase 2 以降）。
+
+## 技術スタック
+
+- Next.js（App Router）＋ TypeScript ＋ Tailwind CSS
+- データは `data/` の静的 JSON をクライアントサイドで読み込み（サーバー不要）
+- 祝日判定: `@holiday-jp/holiday_jp`
+- ホスティング: Vercel
+
+## セットアップ
+
+前提: Node.js（推奨 LTS）。
 
 ```bash
+# 依存パッケージのインストール
+npm install
+
+# 開発サーバー起動（http://localhost:3000）
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# 本番ビルド
+npm run build
+
+# 本番サーバー起動
+npm run start
+
+# Lint
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ディレクトリ構成
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+iyotetsu-tram/
+├ data/          # 電停・系統・時刻表・区間の静的JSON（+ validate.py, data/README.md）
+├ design/        # UI ハンドオフ資料
+├ docs/          # 仕様書(spec.md)・UI設計(design.md)・規約(conventions.md) 等
+├ public/        # 静的アセット
+├ src/
+│  ├ app/        # Next.js App Router（page / layout / globals.css）
+│  ├ components/ # UI コンポーネント（TramApp ほか）
+│  ├ lib/        # ドメインロジック（data / time / time-resolver / day-type / search / route-search / geo / fare / direction）
+│  └ types.ts    # 共通型定義
+├ next.config.ts
+└ package.json
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## データと出典
 
-## Learn More
+本アプリのデータは、公式の時刻表・路線図・運賃を元に独自に構造化した事実情報です。
 
-To learn more about Next.js, take a look at the following resources:
+- 時刻表: 公式時刻表（2023年11月1日改正版）
+- 運賃: 公式運賃（2026年4月1日改定）
+- 路線図・電停情報: 公式路線図
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+データ区分:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **一次データ**（`stops.json` / `routes.json` / `timetable_route*.json`）: 公式資料を元に構造化し原本照合済み。
+- **派生データ**（`segments.json`）: 公式に時刻記載のない中間電停を補間した推定値。
 
-## Deploy on Vercel
+公式に時刻が記載されている電停は公式値、中間電停は計算による推定値として内部で区別しており、所要・到着の一部は推定値を含みます。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+詳細は `data/README.md` を参照してください。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 免責
+
+- 本アプリは伊予鉄道の**非公式**ツールです。
+- 表示する時刻・所要時間・運賃は目安です。正確・最新の情報は、伊予鉄道の公式時刻表および公式運行情報を必ずご確認ください。
+- データ基準: 時刻は2023年11月1日改正、運賃は2026年4月1日改定に基づきます。改正・改定後は実際と異なる場合があります。
+- 途中電停の発車・到着・所要時間は推定値を含みます。
+
+アプリ内にも「このアプリについて（ⓘ）」として同等の免責を掲載しています。
