@@ -74,10 +74,17 @@ export function resolveStopTimes(
   }
 
   // 中間電停の補間（spec 3.5）
+  // segments は route 単位で方向を区別しない。双方向系統(③⑤⑥)は同一区間が往復で
+  // 逆順に現れるため、この便の進行方向(section.stopsInOrder)で a→b が順方向の区間だけ
+  // を適用する。逆方向便に逆順区間が誤適用され Map.set で上書きされるのを防ぐ
+  // （ループ系統①②は全区間が順方向のため影響なし）。
   for (const seg of segmentsByRoute(section.routeId)) {
     const [a, b] = seg.between;
     const startTime = trip.stops[a];
     if (startTime === undefined || trip.stops[b] === undefined) continue;
+    const ai = section.stopsInOrder.indexOf(a);
+    const bi = section.stopsInOrder.indexOf(b);
+    if (ai < 0 || bi < 0 || ai >= bi) continue;
     const startMin = parseTimeStr(startTime);
     for (const mid of seg.intermediate) {
       const minutes = startMin + mid.offset_from_start_min;

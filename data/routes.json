@@ -44,11 +44,11 @@
       "direction_label": "松山市駅 ⇔ 大街道 ⇔ 上一万 ⇔ 道後温泉",
       "stops_order_outbound": [
         "matsuyamashi-eki", "minami-horibata", "kencho-mae", "okaido",
-        "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"
+        "katsuyamacho", "keisatsusho-mae", "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"
       ],
       "stops_order_inbound": [
         "dogo-onsen", "dogo-koen", "minamimachi", "kamiichiman",
-        "okaido", "kencho-mae", "minami-horibata", "matsuyamashi-eki"
+        "keisatsusho-mae", "katsuyamacho", "okaido", "kencho-mae", "minami-horibata", "matsuyamashi-eki"
       ],
       "note": "時刻表記載電停は[松山市駅/南堀端/県庁前/大街道/上一万/道後温泉]の主要6電停。南町・道後公園は上一万-道後温泉間の中間で実測補間。"
     },
@@ -61,10 +61,10 @@
       "direction_label": "JR松山駅前 ⇔ 大街道 ⇔ 上一万 ⇔ 道後温泉",
       "stops_order_outbound": [
         "jr-matsuyama-ekimae", "otemachi-ekimae", "nishi-horibata", "minami-horibata",
-        "shiyakusho-mae", "okaido", "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"
+        "shiyakusho-mae", "okaido", "katsuyamacho", "keisatsusho-mae", "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"
       ],
       "stops_order_inbound": [
-        "dogo-onsen", "dogo-koen", "minamimachi", "kamiichiman", "okaido",
+        "dogo-onsen", "dogo-koen", "minamimachi", "kamiichiman", "keisatsusho-mae", "katsuyamacho", "okaido",
         "shiyakusho-mae", "minami-horibata", "nishi-horibata", "otemachi-ekimae", "jr-matsuyama-ekimae"
       ],
       "note": "時刻表記載電停は[道後温泉/上一万/大街道/市役所前/南堀端/西堀端/大手町/JR松山駅前]。"

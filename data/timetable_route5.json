@@ -10,7 +10,7 @@
   "directions": {
     "outbound_to_dogo": {
       "label": "JR松山駅前→道後温泉",
-      "stops_in_order": ["jr-matsuyama-ekimae", "otemachi-ekimae", "nishi-horibata", "minami-horibata", "shiyakusho-mae", "okaido", "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"],
+      "stops_in_order": ["jr-matsuyama-ekimae", "otemachi-ekimae", "nishi-horibata", "minami-horibata", "shiyakusho-mae", "okaido", "katsuyamacho", "keisatsusho-mae", "kamiichiman", "minamimachi", "dogo-koen", "dogo-onsen"],
       "early_morning_trips": [
         { "trip": "I1", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "6:13", "otemachi-ekimae": "6:14", "nishi-horibata": "6:17", "minami-horibata": "6:20", "shiyakusho-mae": "6:22", "okaido": "6:26", "kamiichiman": "6:31", "dogo-onsen": "6:38" } },
         { "trip": "I2", "saturday_holiday_suspended": false, "stops": { "jr-matsuyama-ekimae": "6:44", "otemachi-ekimae": "6:45", "nishi-horibata": "6:48", "minami-horibata": "6:51", "shiyakusho-mae": "6:53", "okaido": "6:57", "kamiichiman": "7:02", "dogo-onsen": "7:09" } },
@@ -47,7 +47,7 @@
     },
     "inbound_to_jr": {
       "label": "道後温泉→JR松山駅前",
-      "stops_in_order": ["dogo-onsen", "dogo-koen", "minamimachi", "kamiichiman", "okaido", "shiyakusho-mae", "minami-horibata", "nishi-horibata", "otemachi-ekimae", "jr-matsuyama-ekimae"],
+      "stops_in_order": ["dogo-onsen", "dogo-koen", "minamimachi", "kamiichiman", "keisatsusho-mae", "katsuyamacho", "okaido", "shiyakusho-mae", "minami-horibata", "nishi-horibata", "otemachi-ekimae", "jr-matsuyama-ekimae"],
       "early_morning_trips": [
         { "trip": "O1", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "6:16", "kamiichiman": "6:22", "okaido": "6:27", "shiyakusho-mae": "6:31", "minami-horibata": "6:33", "nishi-horibata": "6:36", "otemachi-ekimae": "6:38", "jr-matsuyama-ekimae": "6:40" } },
         { "trip": "O2", "saturday_holiday_suspended": false, "stops": { "dogo-onsen": "6:42", "kamiichiman": "6:48", "okaido": "6:53", "shiyakusho-mae": "6:57", "minami-horibata": "6:59", "nishi-horibata": "7:02", "otemachi-ekimae": "7:04", "jr-matsuyama-ekimae": "7:06" } },

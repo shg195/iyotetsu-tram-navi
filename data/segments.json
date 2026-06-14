@@ -31,24 +31,30 @@
     },
     {
       "route_id": "3",
-      "_comment": "③番。記載: 松山市駅/南堀端/県庁前/大街道/上一万/道後温泉。上一万-道後温泉間の南町・道後公園が補間対象。",
+      "_comment": "③番。記載: 松山市駅/南堀端/県庁前/大街道/上一万/道後温泉。上一万-道後温泉間の南町・道後公園、大街道-上一万間の勝山町・警察署前が補間対象。双方向のため往復別に定義。",
       "segments": [
+        { "between": ["okaido", "kamiichiman"], "intermediate": [ {"stop": "katsuyamacho", "offset_from_start_min": 2}, {"stop": "keisatsusho-mae", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "松山市駅→道後方向。大街道→勝山町→警察署前→上一万。約6分(okaido6:36→kamiichiman6:42等)。①②と共用区間。" },
+        { "between": ["kamiichiman", "okaido"], "intermediate": [ {"stop": "keisatsusho-mae", "offset_from_start_min": 2}, {"stop": "katsuyamacho", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "道後→松山市駅方向。上一万→警察署前→勝山町→大街道。約5分(kamiichiman6:07→okaido6:12等)。" },
         { "between": ["kamiichiman", "dogo-onsen"], "intermediate": [ {"stop": "minamimachi", "offset_from_start_min": 2}, {"stop": "dogo-koen", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "上一万→南町→道後公園→道後温泉。約6分(7:25→7:31等)を3区間に配分" }
       ]
     },
     {
       "route_id": "5",
-      "_comment": "⑤番。記載: 道後温泉/上一万/大街道/市役所前/南堀端/西堀端/大手町/JR松山駅前。南町・道後公園が補間対象。",
+      "_comment": "⑤番。記載: 道後温泉/上一万/大街道/市役所前/南堀端/西堀端/大手町/JR松山駅前。南町・道後公園、大街道-上一万間の勝山町・警察署前が補間対象。双方向のため往復別に定義。",
       "segments": [
+        { "between": ["okaido", "kamiichiman"], "intermediate": [ {"stop": "katsuyamacho", "offset_from_start_min": 2}, {"stop": "keisatsusho-mae", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "JR→道後方向。大街道→勝山町→警察署前→上一万。約5分(okaido6:26→kamiichiman6:31等)。" },
+        { "between": ["kamiichiman", "okaido"], "intermediate": [ {"stop": "keisatsusho-mae", "offset_from_start_min": 2}, {"stop": "katsuyamacho", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "道後→JR方向。上一万→警察署前→勝山町→大街道。約5分(kamiichiman6:22→okaido6:27等)。" },
         { "between": ["kamiichiman", "dogo-onsen"], "intermediate": [ {"stop": "minamimachi", "offset_from_start_min": 2}, {"stop": "dogo-koen", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "上一万→南町→道後公園→道後温泉。約6分(8:06→8:11+α)" }
       ]
     },
     {
       "route_id": "6",
-      "_comment": "⑥番。記載: 松山市駅/南堀端/本町3丁目/本町6丁目。本町一・四・五が補間対象。",
+      "_comment": "⑥番。記載: 松山市駅/南堀端/本町3丁目/本町6丁目。本町一・四・五が補間対象。双方向のため往復別に定義。",
       "segments": [
-        { "between": ["minami-horibata", "hommachi-san"], "intermediate": [ {"stop": "hommachi-ichi", "offset_from_start_min": 2} ], "segment_total_min": 5, "note": "南堀端→本町一→本町三。約5分(6:40→6:45)" },
-        { "between": ["hommachi-san", "hommachi-roku-rosen"], "intermediate": [ {"stop": "hommachi-yon", "offset_from_start_min": 2}, {"stop": "hommachi-go", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "本町三→本町四→本町五→本町六。約6分(6:45→6:51)" }
+        { "between": ["minami-horibata", "hommachi-san"], "intermediate": [ {"stop": "hommachi-ichi", "offset_from_start_min": 2} ], "segment_total_min": 5, "note": "松山市駅→本町六方向。南堀端→本町一→本町三。約5分(6:40→6:45)" },
+        { "between": ["hommachi-san", "hommachi-roku-rosen"], "intermediate": [ {"stop": "hommachi-yon", "offset_from_start_min": 2}, {"stop": "hommachi-go", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "松山市駅→本町六方向。本町三→本町四→本町五→本町六。約6分(6:45→6:51)" },
+        { "between": ["hommachi-san", "minami-horibata"], "intermediate": [ {"stop": "hommachi-ichi", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "本町六→松山市駅方向。本町三→本町一→南堀端。約5分(7:05→7:10)" },
+        { "between": ["hommachi-roku-rosen", "hommachi-san"], "intermediate": [ {"stop": "hommachi-go", "offset_from_start_min": 2}, {"stop": "hommachi-yon", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "本町六→松山市駅方向。本町六→本町五→本町四→本町三。約5分(7:00→7:05)" }
       ]
     }
   ]
