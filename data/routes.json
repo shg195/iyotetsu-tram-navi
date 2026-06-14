@@ -13,10 +13,11 @@
       "loop": true,
       "direction_label": "松山市駅→JR松山駅前→大街道→松山市駅（時計回り）",
       "stops_order": [
-        "matsuyamashi-eki", "nishi-horibata", "jr-matsuyama-ekimae", "komachi",
-        "hommachi-roku", "kiyacho", "takasagocho", "shimizumachi", "teppocho",
-        "sekijujibyoin-mae", "heiwadori-ichi", "kamiichiman", "keisatsusho-mae",
-        "katsuyamacho", "okaido", "kencho-mae", "shiyakusho-mae", "matsuyamashi-eki"
+        "matsuyamashi-eki", "minami-horibata", "nishi-horibata", "otemachi-ekimae",
+        "jr-matsuyama-ekimae", "miyatacho", "komachi", "kayamachi-roku", "hommachi-roku",
+        "kiyacho", "takasagocho", "shimizumachi", "teppocho", "sekijujibyoin-mae",
+        "heiwadori-ichi", "kamiichiman", "keisatsusho-mae", "katsuyamacho", "okaido",
+        "kencho-mae", "shiyakusho-mae", "minami-horibata", "matsuyamashi-eki"
       ],
       "note": "始発から終点まで1周。時刻表には主要電停のみ記載のため、stops_orderの全電停時刻は実測+補間。早朝/夜間に古町(komachi)始発・古町止めの区間便あり。"
     },
@@ -28,10 +29,11 @@
       "loop": true,
       "direction_label": "松山市駅→大街道→JR松山駅前→松山市駅（反時計回り）",
       "stops_order": [
-        "matsuyamashi-eki", "shiyakusho-mae", "kencho-mae", "okaido", "katsuyamacho",
-        "keisatsusho-mae", "kamiichiman", "heiwadori-ichi", "sekijujibyoin-mae",
+        "matsuyamashi-eki", "minami-horibata", "shiyakusho-mae", "kencho-mae", "okaido",
+        "katsuyamacho", "keisatsusho-mae", "kamiichiman", "heiwadori-ichi", "sekijujibyoin-mae",
         "teppocho", "shimizumachi", "takasagocho", "kiyacho", "hommachi-roku",
-        "komachi", "jr-matsuyama-ekimae", "nishi-horibata", "matsuyamashi-eki"
+        "kayamachi-roku", "komachi", "miyatacho", "jr-matsuyama-ekimae", "otemachi-ekimae",
+        "nishi-horibata", "minami-horibata", "matsuyamashi-eki"
       ],
       "note": "①の逆回り。時刻表記載は主要電停(松山市駅/市役所前/大街道/上一万/赤十字病院前/鉄砲町/木屋町/本町6丁目/古町/JR松山駅前/西堀端/松山市駅)。早朝/夜間に古町始発・古町止め便あり。"
     },

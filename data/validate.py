@@ -36,7 +36,10 @@ def main():
     dup = sorted({x for x in stop_ids if stop_ids.count(x) > 1})
     if dup:
         errors.append(f"stops.json: 重複id {dup}")
-    valid_ids = set(stop_ids) | {"matsuyamashi-eki-arr"}  # 環状線の到着用エイリアス
+    valid_ids = set(stop_ids) | {
+        "matsuyamashi-eki-arr",  # 周回の終点（起点 松山市駅へ戻る）
+        "minami-horibata-arr",   # 南堀端の2回目通過（環状線で2回通る）
+    }
 
     # 3. 各便の検証
     trip_count = 0
@@ -125,18 +128,24 @@ def main():
     #    乗換なしで from→to を通す系統 = ある区間順で idx(from) < idx(to) を満たす系統。
     #    電停カバレッジ欠落（旧F-1類）や継ぎ目跨ぎの取りこぼしを回帰検出する。
     #    ※ ①②の継ぎ目跨ぎ(loop-wrap)は実装しない方針(確定)＝期待集合に含めない。
+    # 周回末尾の合成電停は実電停IDへ寄せて照合する（route-search の canonicalStopId と同じ）。
+    LOOP_ARR = {
+        "matsuyamashi-eki-arr": "matsuyamashi-eki",
+        "minami-horibata-arr": "minami-horibata",
+    }
+
+    def canon(s):
+        return LOOP_ARR.get(s, s)
+
     def serving_routes(frm, to):
         served = set()
         for r in ROUTE_IDS:
             for _key, order in sections_by_route[r]:
-                if frm not in order:
+                fi_list = [i for i, s in enumerate(order) if canon(s) == frm]
+                if not fi_list:
                     continue
-                fi = order.index(frm)
-                to_idx = [
-                    i for i, s in enumerate(order)
-                    if s == to or (to == "matsuyamashi-eki" and s == "matsuyamashi-eki-arr")
-                ]
-                if any(ti > fi for ti in to_idx):
+                fi = fi_list[0]
+                if any(canon(s) == to and i > fi for i, s in enumerate(order)):
                     served.add(r)
                     break
         return served
@@ -150,6 +159,12 @@ def main():
         ("jr-matsuyama-ekimae", "dogo-onsen", {"5"}),
         ("dogo-onsen", "jr-matsuyama-ekimae", {"5"}),
         ("dogo-onsen", "matsuyamashi-eki", {"3"}),
+        # F-1解消（環状線①②への欠落4電停追加）の回帰ロック
+        ("matsuyamashi-eki", "miyatacho", {"1", "2"}),          # 宮田町が到達可能に(旧F-1)
+        ("matsuyamashi-eki", "kayamachi-roku", {"1", "2"}),     # 萱町六丁目が到達可能に(旧F-1)
+        ("matsuyamashi-eki", "otemachi-ekimae", {"1", "2"}),    # 大手町駅前が環状線に
+        ("otemachi-ekimae", "matsuyamashi-eki", {"1", "2"}),    # 周回末(南堀端2回目跨ぎ)で松山市駅へ
+        ("katsuyamacho", "minami-horibata", {"1", "2", "3", "5"}),  # 南堀端2回目通過(合成ID)を①②で拾う＋③⑤
     ]
     for frm, to, exp in expected_od:
         got = serving_routes(frm, to)

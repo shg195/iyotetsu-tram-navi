@@ -9,24 +9,33 @@
   "interpolations": [
     {
       "route_id": "1",
-      "_comment": "①番。時刻表記載: 松山市駅/西堀端/JR松山駅前/古町/本町六/木屋町/鉄砲町/赤十字病院前/上一万/大街道/市役所前。補間が必要な中間電停を区間ごとに定義。",
+      "_comment": "①番(時計回り)。時刻表記載: 松山市駅/西堀端/JR松山駅前/古町/本町六/木屋町/鉄砲町/赤十字病院前/上一万/大街道/市役所前。補間: 南堀端/大手町駅前/宮田町/萱町六丁目/高砂町/清水町/平和通一/警察署前/勝山町/県庁前。南堀端は周回で2回通過し2回目は合成ID minami-horibata-arr。区間順に定義。",
       "segments": [
+        { "between": ["matsuyamashi-eki", "nishi-horibata"], "intermediate": [ {"stop": "minami-horibata", "offset_from_start_min": 2} ], "segment_total_min": 5, "note": "①周回始め。松山市駅→南堀端→西堀端。約5分(0→5min)" },
+        { "between": ["nishi-horibata", "jr-matsuyama-ekimae"], "intermediate": [ {"stop": "otemachi-ekimae", "offset_from_start_min": 2} ], "segment_total_min": 5, "note": "西堀端→大手町駅前→JR松山駅前。約5分(5→10min)" },
+        { "between": ["jr-matsuyama-ekimae", "komachi"], "intermediate": [ {"stop": "miyatacho", "offset_from_start_min": 3} ], "segment_total_min": 6, "note": "JR松山駅前→宮田町→古町。約6分(10→16min)" },
+        { "between": ["komachi", "hommachi-roku"], "intermediate": [ {"stop": "kayamachi-roku", "offset_from_start_min": 2} ], "segment_total_min": 3, "note": "古町→萱町六丁目→本町六丁目。約3分(16→19min)" },
         { "between": ["kiyacho", "teppocho"], "intermediate": [ {"stop": "takasagocho", "offset_from_start_min": 2}, {"stop": "shimizumachi", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "木屋町→高砂町→清水町→鉄砲町。木屋町発から鉄砲町まで約6分(7:31→7:37等)を3区間に配分" },
+        { "between": ["sekijujibyoin-mae", "kamiichiman"], "intermediate": [ {"stop": "heiwadori-ichi", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "赤十字病院前→平和通一→上一万。約4分(7:38→7:42)" },
         { "between": ["kamiichiman", "okaido"], "intermediate": [ {"stop": "keisatsusho-mae", "offset_from_start_min": 2}, {"stop": "katsuyamacho", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "上一万→警察署前→勝山町→大街道。上一万発から大街道まで約5分(7:42→7:47)を配分" },
         { "between": ["okaido", "shiyakusho-mae"], "intermediate": [ {"stop": "kencho-mae", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "大街道→県庁前→市役所前。約4分(7:47→7:51)" },
-        { "between": ["sekijujibyoin-mae", "kamiichiman"], "intermediate": [ {"stop": "heiwadori-ichi", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "赤十字病院前→平和通一→上一万。約4分(7:38→7:42)" }
+        { "between": ["shiyakusho-mae", "matsuyamashi-eki-arr"], "intermediate": [ {"stop": "minami-horibata-arr", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "①周回末。市役所前→南堀端(2周目)→松山市駅。約5分(41→46min)。2回目南堀端は合成ID" }
       ]
     },
     {
       "route_id": "2",
-      "_comment": "②番(逆回り)。記載: 松山市駅/市役所前/大街道/上一万/赤十字病院前/鉄砲町/木屋町/本町六/古町/JR松山駅前/西堀端。",
+      "_comment": "②番(反時計回り)。記載: 松山市駅/市役所前/大街道/上一万/赤十字病院前/鉄砲町/木屋町/本町六/古町/JR松山駅前/西堀端。補間: 南堀端/県庁前/勝山町/警察署前/平和通一/清水町/高砂町/萱町六丁目/宮田町/大手町駅前。南堀端は周回で2回通過し2回目は合成ID minami-horibata-arr。",
       "segments": [
-        { "between": ["matsuyamashi-eki", "shiyakusho-mae"], "intermediate": [], "segment_total_min": 4, "note": "松山市駅→(南堀端は②番では非経由or通過)→市役所前。約4分" },
+        { "between": ["matsuyamashi-eki", "shiyakusho-mae"], "intermediate": [ {"stop": "minami-horibata", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "松山市駅→南堀端→市役所前。約4分(0→4min)" },
         { "between": ["shiyakusho-mae", "okaido"], "intermediate": [ {"stop": "kencho-mae", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "市役所前→県庁前→大街道。約4分" },
         { "between": ["okaido", "kamiichiman"], "intermediate": [ {"stop": "katsuyamacho", "offset_from_start_min": 2}, {"stop": "keisatsusho-mae", "offset_from_start_min": 4} ], "segment_total_min": 6, "note": "大街道→勝山町→警察署前→上一万。約6分" },
+        { "between": ["kamiichiman", "sekijujibyoin-mae"], "intermediate": [ {"stop": "heiwadori-ichi", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "上一万→平和通一→赤十字病院前。約4分" },
         { "between": ["sekijujibyoin-mae", "teppocho"], "intermediate": [], "segment_total_min": 3, "note": "赤十字病院前→鉄砲町。約3分" },
         { "between": ["teppocho", "kiyacho"], "intermediate": [ {"stop": "shimizumachi", "offset_from_start_min": 2}, {"stop": "takasagocho", "offset_from_start_min": 4} ], "segment_total_min": 5, "note": "鉄砲町→清水町→高砂町→木屋町。約5分" },
-        { "between": ["kamiichiman", "sekijujibyoin-mae"], "intermediate": [ {"stop": "heiwadori-ichi", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "上一万→平和通一→赤十字病院前。約4分" }
+        { "between": ["hommachi-roku", "komachi"], "intermediate": [ {"stop": "kayamachi-roku", "offset_from_start_min": 2} ], "segment_total_min": 5, "note": "本町六丁目→萱町六丁目→古町。約5分(25→30min)" },
+        { "between": ["komachi", "jr-matsuyama-ekimae"], "intermediate": [ {"stop": "miyatacho", "offset_from_start_min": 3} ], "segment_total_min": 5, "note": "古町→宮田町→JR松山駅前。約5分(30→35min)" },
+        { "between": ["jr-matsuyama-ekimae", "nishi-horibata"], "intermediate": [ {"stop": "otemachi-ekimae", "offset_from_start_min": 2} ], "segment_total_min": 4, "note": "JR松山駅前→大手町駅前→西堀端。約4分(35→39min)" },
+        { "between": ["nishi-horibata", "matsuyamashi-eki-arr"], "intermediate": [ {"stop": "minami-horibata-arr", "offset_from_start_min": 4} ], "segment_total_min": 7, "note": "②周回末。西堀端→南堀端(2周目)→松山市駅。約7分(39→46min)。2回目南堀端は合成ID" }
       ]
     },
     {

@@ -14,13 +14,17 @@ import { allRoutes, normalizedSections } from "@/lib/data";
 import { concreteTrips, resolveStopTimes } from "@/lib/time-resolver";
 import { getDayType, tripRunsOn } from "@/lib/day-type";
 
-// ループ系統(①②)の末尾は1周して松山市駅に戻る合成電停 matsuyamashi-eki-arr
-// （stops.json 非掲載）。OD照合・表示では起点電停 matsuyamashi-eki に寄せる。
-const LOOP_ARRIVAL_ID: StopId = "matsuyamashi-eki-arr";
-const LOOP_ARRIVAL_CANONICAL: StopId = "matsuyamashi-eki";
+// ループ系統(①②)で1周の末尾側に現れる合成電停（stops.json 非掲載）。
+// OD照合・表示では実在の電停IDへ寄せる。
+//  - matsuyamashi-eki-arr: 周回の終点（起点 松山市駅へ戻る）
+//  - minami-horibata-arr : 南堀端の2回目通過（西堀端→南堀端→松山市駅 の区間）
+const LOOP_ARRIVAL_CANONICAL: Record<StopId, StopId> = {
+  "matsuyamashi-eki-arr": "matsuyamashi-eki",
+  "minami-horibata-arr": "minami-horibata",
+};
 
 function canonicalStopId(id: StopId): StopId {
-  return id === LOOP_ARRIVAL_ID ? LOOP_ARRIVAL_CANONICAL : id;
+  return LOOP_ARRIVAL_CANONICAL[id] ?? id;
 }
 
 const MINUTES_PER_DAY = 24 * 60;

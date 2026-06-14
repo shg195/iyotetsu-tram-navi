@@ -8,10 +8,11 @@
     "shading_legend": "②番の早朝便・夜間便には網掛けなし。"
   },
   "stops_in_order": [
-    "matsuyamashi-eki", "shiyakusho-mae", "kencho-mae", "okaido", "katsuyamacho",
-    "keisatsusho-mae", "kamiichiman", "heiwadori-ichi", "sekijujibyoin-mae",
+    "matsuyamashi-eki", "minami-horibata", "shiyakusho-mae", "kencho-mae", "okaido",
+    "katsuyamacho", "keisatsusho-mae", "kamiichiman", "heiwadori-ichi", "sekijujibyoin-mae",
     "teppocho", "shimizumachi", "takasagocho", "kiyacho", "hommachi-roku",
-    "komachi", "jr-matsuyama-ekimae", "nishi-horibata", "matsuyamashi-eki-arr"
+    "kayamachi-roku", "komachi", "miyatacho", "jr-matsuyama-ekimae", "otemachi-ekimae",
+    "nishi-horibata", "minami-horibata-arr", "matsuyamashi-eki-arr"
   ],
   "early_morning_trips": [
     { "trip": "E1", "origin": "komachi", "saturday_holiday_suspended": false,
