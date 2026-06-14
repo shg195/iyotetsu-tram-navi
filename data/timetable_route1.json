@@ -51,7 +51,7 @@
       "sekijujibyoin-mae": 28, "kamiichiman": 32, "okaido": 37, "shiyakusho-mae": 41,
       "matsuyamashi-eki-arr": 46
     },
-    "offset_note": "offsetは早朝の松山市駅始発便(例:7:50発→各電停)の実測差分から算出。高砂町/清水町/平和通一/警察署前/勝山町/県庁前の中間6電停offsetはsegments.jsonで補間。"
+    "offset_note": "offsetは早朝の松山市駅始発便(例:7:50発→各電停)の実測差分から算出。南堀端/大手町駅前/宮田町/萱町六丁目/高砂町/清水町/平和通一/警察署前/勝山町/県庁前の中間電停offsetはsegments.jsonで補間(南堀端は周回で2回通過し2回目は合成ID minami-horibata-arr)。"
   },
   "night_trips": [
     { "trip": "N1", "origin": "matsuyamashi-eki", "terminus": "full", "saturday_holiday_suspended": false,

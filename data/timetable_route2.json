@@ -50,7 +50,7 @@
       "sekijujibyoin-mae": 16, "teppocho": 19, "kiyacho": 24, "hommachi-roku": 25,
       "komachi": 30, "jr-matsuyama-ekimae": 35, "nishi-horibata": 39, "matsuyamashi-eki-arr": 46
     },
-    "offset_note": "松山市駅始発便の実測差分から算出。県庁前/勝山町/警察署前/平和通一/高砂町/清水町の中間電停offsetはsegments.jsonで補間。"
+    "offset_note": "松山市駅始発便の実測差分から算出。南堀端/県庁前/勝山町/警察署前/平和通一/清水町/高砂町/萱町六丁目/宮田町/大手町駅前の中間電停offsetはsegments.jsonで補間(南堀端は周回で2回通過し2回目は合成ID minami-horibata-arr)。"
   },
   "night_trips": [
     { "trip": "N1", "origin": "matsuyamashi-eki", "terminus": "full", "saturday_holiday_suspended": false,

@@ -165,6 +165,11 @@ def main():
         ("matsuyamashi-eki", "otemachi-ekimae", {"1", "2"}),    # 大手町駅前が環状線に
         ("otemachi-ekimae", "matsuyamashi-eki", {"1", "2"}),    # 周回末(南堀端2回目跨ぎ)で松山市駅へ
         ("katsuyamacho", "minami-horibata", {"1", "2", "3", "5"}),  # 南堀端2回目通過(合成ID)を①②で拾う＋③⑤
+        # 下り方向（道後温泉→松山/JR）の南町・道後公園カバレッジ（監査F-A回帰ロック）
+        ("dogo-onsen", "minamimachi", {"3", "5"}),              # 道後温泉→南町(inbound)
+        ("dogo-onsen", "dogo-koen", {"3", "5"}),                # 道後温泉→道後公園(inbound)
+        ("minamimachi", "matsuyamashi-eki", {"3"}),             # 南町→松山市駅(③のみ・⑤はJR行き)
+        ("dogo-koen", "okaido", {"3", "5"}),                    # 道後公園→大街道(inbound)
     ]
     for frm, to, exp in expected_od:
         got = serving_routes(frm, to)
@@ -200,6 +205,36 @@ def main():
                             "%s番 区間[%s→%s] 中間電停 %s が区間順の外側: %s。補間時刻が逆転=単調性違反"
                             % (ROUTE_MARU.get(r, r), a, b, m, loc)
                         )
+
+    # 6b. 補間カバレッジ（方向別）の回帰検出（監査F-Aクラス）
+    #    双方向系統で「往き向きだけ区間を定義し逆向き区間を忘れる」と、逆向き便で
+    #    中間電停が一度も補間されず脱落する（time-resolver は ai<bi の向きの便にだけ
+    #    区間[a,b]を適用するため）。脱落電停は stops_in_order には載るので serving_routes
+    #    / 単調性チェックでは検出できない（旧F-A=道後公園/南町 inbound脱落）。
+    #    各方向の stops_in_order 上にある補間対象電停が、その方向で適用される区間に
+    #    必ず覆われることを検査する。
+    for r in ROUTE_IDS:
+        segs = seg_by_route.get(r, [])
+        interp_stops = {
+            m["stop"] for seg in segs for m in seg.get("intermediate", [])
+        }
+        for key, order in sections_by_route[r]:
+            covered = set()
+            for seg in segs:
+                a, b = seg["between"]
+                if a not in order or b not in order:
+                    continue
+                if order.index(a) >= order.index(b):
+                    continue  # この向きの便には適用されない区間（逆区間）
+                for m in seg.get("intermediate", []):
+                    covered.add(m["stop"])
+            for s in order:
+                if s in interp_stops and s not in covered:
+                    errors.append(
+                        "%s番 %s: 補間対象電停 %s がこの方向の適用区間で覆われず脱落"
+                        "（補間なし=経路なし誤案内）"
+                        % (ROUTE_MARU.get(r, r), key, s)
+                    )
 
     # 結果出力
     print(f"検証ファイル数: {len(files)}")
