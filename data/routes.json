@@ -28,7 +28,7 @@
       "loop": true,
       "direction_label": "松山市駅→大街道→JR松山駅前→松山市駅（反時計回り）",
       "stops_order": [
-        "matsuyamashi-eki", "shiyakusho-mae", "okaido", "kencho-mae", "katsuyamacho",
+        "matsuyamashi-eki", "shiyakusho-mae", "kencho-mae", "okaido", "katsuyamacho",
         "keisatsusho-mae", "kamiichiman", "heiwadori-ichi", "sekijujibyoin-mae",
         "teppocho", "shimizumachi", "takasagocho", "kiyacho", "hommachi-roku",
         "komachi", "jr-matsuyama-ekimae", "nishi-horibata", "matsuyamashi-eki"

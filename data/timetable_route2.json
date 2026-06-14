@@ -8,7 +8,7 @@
     "shading_legend": "②番の早朝便・夜間便には網掛けなし。"
   },
   "stops_in_order": [
-    "matsuyamashi-eki", "shiyakusho-mae", "okaido", "kencho-mae", "katsuyamacho",
+    "matsuyamashi-eki", "shiyakusho-mae", "kencho-mae", "okaido", "katsuyamacho",
     "keisatsusho-mae", "kamiichiman", "heiwadori-ichi", "sekijujibyoin-mae",
     "teppocho", "shimizumachi", "takasagocho", "kiyacho", "hommachi-roku",
     "komachi", "jr-matsuyama-ekimae", "nishi-horibata", "matsuyamashi-eki-arr"
